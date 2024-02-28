@@ -151,12 +151,16 @@ h2 {
     flex-grow: 1;
 }
 
-.intro-text p{
+
+#intro-paragraph{
     font-size: 3dvh;
     line-height: 38px;
     margin-bottom: 0;
-    overflow-y: scroll;
     max-height: 60dvh;
+    overflow: scroll;
+    height: 60dvh;
+    margin-bottom: 0;
+    z-index: 1;
 }
 
 #okay {
@@ -164,6 +168,18 @@ h2 {
     opacity: 0;
 }
 
+.scroll-down {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.scroll-down img {
+    height: 3dvh;
+    width: auto;
+    opacity: .5;
+}
 
 .placeholder {
     background-color: var(--green-compliment);
