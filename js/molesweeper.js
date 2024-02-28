@@ -54,7 +54,6 @@ window.addEventListener('load', function(){
                  To win, smash all the hills except those that a mole is sleeping under. If you wake a mole, though, it'll wake its friends, and the game will be over.<br><br>
                  Good luck!`
 
-
   gsap.set([introLogo, playBtn, startDialogue], {visibility: 'visible'})
   gsap.from(introLogo, {duration: 1, rotation: 360, opacity: 0, scale: .02, ease: 'power2.out', transformOrigin: '50% 50%', delay: 0.0000001})
   if(mediaQuery.matches) {
