@@ -50,11 +50,14 @@ button:hover {
 
 main {
     display: flex;
+    flex-direction: column-reverse;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
+    position: absolute;
+    bottom: 0;
 }
 
 
@@ -64,19 +67,16 @@ main {
 /*******************************/
 
 #intro-logo {
-    display: flex;
     position: absolute;
-    top:calc((100vh - calc(80vw * (366/1884)))/2);
-    left: 10vw;
-    width: 80vw;
+    top:calc(calc((100vh - calc(80vw * (366/1884)))/2) - 12vh);
+    left: 5vw;
+    width: 90vw;
     height: calc(80vw * (366/1884));
-    justify-content: center;
-    align-items: center;
     visibility: hidden;
 }
 
 #play {
-    width: 10vw;
+    width: 30vw;
     height: 10vh;
     z-index: 1;
     margin: 0;
@@ -97,7 +97,7 @@ main {
     padding: 20px;
     box-shadow: 5px 5px 10px 0 #00000058;
     margin: auto auto auto auto;
-    width: 10vw;
+    width: 30vw;
     height: 10vh;
     position: absolute;
     top: 0;
@@ -126,6 +126,7 @@ h2 {
 
 .diff-buttons {
     display: flex;
+    flex-direction: column;
 }
 
 .selected {
@@ -161,6 +162,21 @@ h2 {
 }
 
 
+.placeholder {
+    background-color: var(--green-compliment);
+    height: 10vh;
+    width: 100vw;
+    display: none;
+    text-align: center;
+}
+
+.placeholder img {
+    margin: 0.5vh 2vw;
+    height: 9vh;
+    width: auto;
+    max-width: 96vw;
+}
+
 /*******************************/
 /*********** SIDEBAR ***********/
 /*******************************/
@@ -169,47 +185,91 @@ h2 {
 
 .side-bar {
     flex-grow: 1;
-    background: linear-gradient(to right, var(--green-compliment), var(--grass-green));
+    background-color: var(--green-compliment);
+    display: none;
+    width: 100vw;
+    height: 10vw;
+    z-index: 6;
 }
 
 .side-bar-content {
-    padding: 40px 20px 40px 40px;
+    padding: 0;
     margin:0;
-    height: 100%;
+    height: 10vh;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    max-width: 40vw;
-    visibility: hidden;
 }
 
 #sidebar-logo {
-    max-width: 100%;
-    height: auto;
+    display: none
 }
-
 
 .info {
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    font-size: 30px;
+    justify-content: space-between;
+    font-size: 20px;
     text-align: center;
+    align-items: center;
+    padding: 3px
+}
+
+#flag-toggle-button, #mobile-mute-unmute {
+    height: 10vh;
+    width: calc(10vh + 20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 10vh;
+}
+
+#mobile-mute-unmute {
+    padding: 1vh;
+}
+
+.flag-selected {
+    background-color: rgba(255, 255, 255, 0.303);
+}
+
+#flag-toggle-button img {
+    height: 70%;
+    width: auto;
+}
+
+.flags {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-basis: auto;
+    background-color: white;
+    border: 5px solid var(--green-contrast);
+    border-radius: 20px;
+    height: 9vh;
 }
 
 #flags-remaining {
-    background-color: white;
-    color: black;
-    padding: 20px;
-    display: inline-block;
-    border: 5px solid var(--green-contrast);
-    border-radius: 20px
+    color: var(--green-contrast);
+    font-family: "Irish Grover", sans-serif;
+    font-size: 6vh;
+    height: 8vh;
+    width: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2vw 0 4vw;
 }
 
 #flags-label{
     display: inline-block;
+    text-align: left;
+    font-size: 2vh;
+    /* margin-right: 2vw; */
 }
+
+#add-remove {
+    display: none;
+}
+
 
 
 /* Endgame Panel */
@@ -217,26 +277,27 @@ h2 {
 .end-dialogue-container {
     background-color: white;
     border: 10px solid var(--green-contrast);
-    border-radius: 30px;
-    padding: 40px;
-    margin: 1% 0 1% 10vh;
-    height: 98%;
-    max-width: 40vw;
+    padding: 5vh 5vw;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
     display: none;
 }
 
 .end-dialogue {
-    height: 100%;
-    width: 100%;
+    height: 90vh;
+    width: 90vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    max-width: 40vw;
 }
 
 .end-dialogue h1 {
     color: var(--green-contrast);
+    font-size: 7vh;
 }
 
 .end-dialogue p {
@@ -268,8 +329,8 @@ h2 {
 
 .game-container {
     cursor: pointer;
-    width: auto;
-    height: 100vh;
+    width: 100vh;
+    height: 80vh;
     padding: 0;
     margin: 0;
     flex-shrink: 0;
@@ -278,21 +339,21 @@ h2 {
 
 .gameboard-background {
     background-image: url("../img/backyard.jpg");
-    background-size: contain;
+    background-size: 400vw 400vw;
     background-position: center;
     background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 80vh;
     margin: 0;
     padding: 0;
 }
 
 .gameBoard {
-    width: 100vh;
-    height: 100vh;
+    width: 100vw;
+    height: 80vh;
     display: grid;
     column-gap: 0;
-    padding: 23% 23% 20% 20%;
+    padding: 5px;
 }
 
 .square {
@@ -310,8 +371,8 @@ h2 {
     text-align: center;
     opacity: 0;
     color: white;
-    font-size: 40px;
-    line-height: 30px;
+    font-size: 32px;
+    line-height: 25px;
     text-shadow: 1px 1px 1px black;
 }
 
@@ -339,10 +400,10 @@ h2 {
 
 #mute-unmute {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 40px;
-    height: auto;
+    bottom: 2vh;
+    right: 2vh;
+    width: auto;
+    height: 6vh;
     opacity: .8;
     display: none;
     z-index: 5;
@@ -351,4 +412,165 @@ h2 {
 #mute-unmute:hover {
     cursor: pointer;
     opacity: 1;
+}
+
+
+
+@media screen and (min-width: 600px) {
+    
+   main {
+    flex-direction: row;
+    width: 100%;
+    position: static;
+   }
+    
+    
+    
+    
+    
+    
+    
+    
+    #intro-logo {
+        display: flex; /* Added */
+        top: calc((100vh - calc(80vw * (366 / 1884))) / 2);
+        left: 10vw;
+        width: 80vw;
+        justify-content: center; /* Added */
+        align-items: center; /* Added */
+    }
+
+    #play {
+        width: 10vw;
+    }
+
+    #startDialogue {
+        width: 10vw;
+    }
+
+    .diff-buttons {
+        flex-direction: row; /* Changed from column to row */
+    }
+
+
+
+
+    /* Gameplay SideBar */
+    .side-bar {
+        background: linear-gradient(to right, var(--green-compliment), var(--grass-green));
+        display: flex; /* Assuming you want to show the sidebar now */
+        flex-direction: column;
+        width: auto; /* Assuming you might want to adjust the width */
+        height: auto; /* And adjust the height if necessary */
+        z-index: 0;
+    }
+
+    .side-bar-content {
+        padding: 40px 20px 40px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-width: 40vw;
+        height: 100%;
+        visibility: visible; /* Assuming you want to make it visible now */
+    }
+    
+    #sidebar-logo {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .info {
+        flex-direction: column;
+        justify-content: space-around;
+        font-size: 30px;
+        flex-grow: 1;
+    }
+
+    #flag-toggle-button, #mobile-mute-unmute {
+        display: none;
+    }
+
+    .flags {
+        justify-content: center;
+        background-color: transparent;
+        border: none;
+        height: auto;
+        width: 100%
+    }
+
+    #flags-remaining {
+        background-color: white;
+        color: black;
+        padding: 20px;
+        font-size: 30px;
+        font-family: "Fredoka", sans-serif;
+        display: flex;
+        border: 5px solid var(--green-contrast);
+        border-radius: 20px;
+        margin: 0 20px
+    }
+
+    #flags-label {
+        display: inline-block;
+        font-size: 30px;
+    }
+
+    #add-remove {
+        display: block;
+    }
+
+    /* Endgame Panel */
+    .end-dialogue-container {
+        border-radius: 30px;
+        padding: 40px;
+        margin: 1% 0 1% 10vh;
+        height: 98%;
+        max-width: 40vw;
+        position: static;
+        display: none; /* Assuming you want to make it block or flex depending on your layout */
+    }
+
+    .end-dialogue {
+        max-width: 40vw;
+    }
+
+    .end-dialogue h1 {
+        font-size: default;
+    } 
+    .end-dialogue p {
+        font-size: 30px; /* Adjusting font size if necessary */
+    }
+
+
+
+    .game-container {
+        width: auto;
+        height: 100vh;
+    }
+
+    .gameboard-background {
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+    }
+
+    .gameBoard {
+        width: 100vh;
+        height: 100vh;
+        padding: 23% 23% 20% 20%;
+    }
+
+    .square p {
+        font-size: 40px;
+        line-height: 30px;
+    }
+
+    #mute-unmute {
+        bottom: 20px;
+        left: 20px;
+        width: 40px;
+        height: auto;
+    }
 }

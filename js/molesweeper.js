@@ -1,3 +1,4 @@
+const mediaQuery = window.matchMedia('(min-width: 600px)')
 const gameContainer = document.querySelector(".game-container");
 const gameBoard = document.querySelector(".gameBoard");
 const startDialogue = document.querySelector('#startDialogue');
@@ -13,6 +14,7 @@ const againBtn = document.querySelector('#play-again');
 const introText = document.querySelector('.intro-text');
 const okayBtn = document.querySelector('#okay');
 const sideBar = document.querySelector('.side-bar-content');
+const sideBarContain = document.querySelector('.side-bar')
 const introLogo = document.querySelector('#intro-logo');
 const flagCounter = document.querySelector('#flags-remaining');
 const endDialogue = document.querySelector('.end-dialogue-container');
@@ -21,25 +23,45 @@ const endgameImg = document.querySelector("#end-game-image");
 const endgameText = document.querySelector(".end-dialogue p");
 const pop = document.querySelector('#pop')
 const muteBtn = document.querySelector('#mute-unmute')
+const mobileMuteBtn = document.querySelector("#mobile-mute-unmute");
 const soundtrack = document.querySelector('#soundtrack')
+const placeholder = document.querySelector(".placeholder");
+const flagToggleBtn = document.querySelector("#flag-toggle-button")
+const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
+const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
 
 
 window.addEventListener('load', function(){
+  // screen.orientation.lock('portrait')
+  
+  if(mediaQuery.matches){
+    gsap.set(sideBar, {x: '-40vw', visibility: 'visible'})
+  } else {gsap.set(sideBarContain, { y: "10vh", visibility: "visible" });}
+
+  gsap.set([introLogo, playBtn, startDialogue], {visibility: 'visible'})
+  gsap.from(introLogo, {duration: 1, rotation: 360, opacity: 0, scale: .02, ease: 'power2.out', transformOrigin: '50% 50%', delay: 0.0000001})
+  if(mediaQuery.matches) {
     gsap.timeline()
-    .set(sideBar, {x: '-40vw', visibility: 'visible'})
-    .set([introLogo, playBtn, startDialogue], {visibility: 'visible'})
-    .from(introLogo, {duration: 1, rotation: 360, opacity: 0, scale: .02, ease: 'power2.out', transformOrigin: '50% 50%'})
-    .to(introLogo, {duration: .5, scale: .5, y: '-22vh'})
+    .to(introLogo, {duration: .5, scale: .5, y: '-22vh', delay: 1})
     .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out'})
     .set(gameContainer, {x: '100vw'})
+  } else {
+    gsap.timeline()
+      .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out', delay: 1})
+      .set(gameContainer, {x: '100vw'})
+  }
 })
 
 playBtn.addEventListener("click", gameSetup);
 
 againBtn.addEventListener('click', function() {
-    gsap.to(endDialogue, {duration: .3, x: '-100vh'})
-    gsap.to(muteBtn, {duration: .3, opacity: 0})
-    gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: function() {location.reload()}})
+    if(mediaQuery.matches) {
+      gsap.to(endDialogue, {duration: .3, x: '-100vh'})
+      gsap.to(muteBtn, {duration: .3, opacity: 0})
+      gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: function() {location.reload()}})
+    } else {
+      gsap.to(endDialogue, {duration: .3, y: '100vh', onComplete: function() {location.reload()}})
+    }
 });
     
 muteBtn.addEventListener('click', function() {
@@ -51,6 +73,17 @@ muteBtn.addEventListener('click', function() {
     muteBtn.src='img/audio.svg'
   }
 })
+
+mobileMuteBtn.addEventListener("click", function () {
+  if (!soundtrack.volume == 0) {
+    soundtrack.volume = 0;
+    mobileMuteBtn.src = "img/audio-muted-mobile.svg";
+  } else {
+    soundtrack.volume = 0.4;
+    mobileMuteBtn.src = "img/audio-mobile.svg";
+  }
+});
+
 
 //***************************************//
 //*************** CLASSES ***************//
@@ -91,9 +124,9 @@ class Square {
 }
 
 class Board {
-    constructor() {
-        this.height = 12;
-        this.width = 12;
+    constructor(height, width) {
+        this.height = height;
+        this.width = width;
         this.boardDict = new Map()
     };
     addSquare(column, row, isMole = false) {
@@ -165,12 +198,28 @@ function gameSetup() {
         };
     });
     
+    
+    gsap.to(playBtn, {duration: .3, scale: 0, opacity: 0})
+    if(mediaQuery.matches) {
+      gsap.timeline()
+      .to(startDialogue, {duration: .5, width: '50vw', opacity: 1, ease: "back-out"})
+      .to(startDialogue, {duration: .5, height: '70vh', ease: 'back-out'}, '-=.4')
+    } else {
+      gsap.timeline()
+      .to(startDialogue, {duration: .5, width: '100vw', opacity: 1, ease: "back-out"})
+      .to(startDialogue, {duration: .3, height: '100vh', borderRadius: 0, ease: 'back-out'}, '-=.4')
+    }
+
+    gsap.set(introLogo, {display: 'none', delay: 1.3})
+
+    if(!mediaQuery.matches) {
+      gsap.timeline()
+      .set(placeholder, {display: 'block', delay: 1.3})
+      .set(sideBarContain, {display: 'block'})
+    }
+
     gsap.timeline()
-    .to(playBtn, {duration: .3, scale: 0, opacity: 0})
-    .to(startDialogue, {duration: .5, width: '50vw', opacity: 1, ease: "back-out"}, '<')
-    .to(startDialogue, {duration: .5, height: '70vh', ease: 'back-out'}, '-=.4')
-    .set(introLogo, {display: 'none'})
-    .set(playBtn, {display: 'none'}, '<')
+    .set(playBtn, {display: 'none', delay: .5})
     .set(difSelect, {display: 'block'}, '<')
     .set(startBtn, {display: 'block', opacity: 0, scale: .2}, '<')
     .from(difHead, {duration: .2, scale: .2, opacity: 0, transformOrigin: '50% 50%'})
@@ -179,38 +228,41 @@ function gameSetup() {
 
 function playGame(difficulty) {
   //*************** INITIALIZATION **************//
-  const width = 12;
-  const height = 12;
   let isFDown = false;
   let currentHover = [];
   let gameLost = false;
   let gameWon = false;
   let revealedList = [];
-  const moleList = genMoles(difficulty);
+  const moleList = genMoles(height, width, difficulty);
   let flagsRemaining = moleList.length;
   let tilesRevealed = 0;
   flagCounter.innerText = flagsRemaining;
 
-    gsap
-      .timeline()
-      .to([difSelect, startBtn], { duration: 0.2, opacity: 0 }, "<")
-      .to(startDialogue, { duration: 0.2, height: "90vh" })
-      .set([difSelect, startBtn], { display: "none" })
-      .set([introText, okayBtn], { display: "block" }, "<")
-      .to([introText, okayBtn], { duration: 0.2, opacity: 1 })
-      .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<")
-    ;
+  gsap.to([difSelect, startBtn], { duration: 0.2, opacity: 0 })
+  if(mediaQuery.matches) {
+    gsap.to(startDialogue, { duration: 0.2, height: "90vh", delay: 0.2})
+  }
+  gsap.timeline()
+    .set([difSelect, startBtn], { display: "none", delay: 0.2})
+    .set([introText, okayBtn], { display: "block" }, "<")
+    .to([introText, okayBtn], { duration: 0.2, opacity: 1 })
+    .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<")
+  ;
   
   soundtrack.volume = 0.4
   soundtrack.play()
-  muteBtn.style.display = 'inline-block'
+  if(mediaQuery.matches) {
+    muteBtn.style.display = 'inline-block'
+  }
 
   okayBtn.addEventListener("click", function () {
-    gsap
-      .timeline()
-      .to(startDialogue, { duration: 0.2, opacity: 0 })
-      .to(sideBar, { duration: 0.2, x: 0 })
-      .to(startDialogue, { display: "none" });
+    gsap.to(startDialogue, { duration: 0.2, opacity: 0 })
+    if(mediaQuery.matches) {
+      gsap.to(sideBar, { duration: 0.2, x: 0, delay: 0.2})
+    } else {
+      gsap.to(sideBarContain, { duration: 0.2, y: 0, delay: 0.2})
+    }
+    gsap.to(startDialogue, { display: "none", delay: 0.2});
   });
 
   window.addEventListener("keydown", function (event) {
@@ -241,10 +293,20 @@ function playGame(difficulty) {
     }
   });
 
+  flagToggleBtn.addEventListener('click', function() {
+    if(!isFDown) {
+      isFDown = true
+      this.classList.add("flag-selected")
+    } else {
+      isFDown = false
+      this.classList.remove("flag-selected")
+    }
+  }); 
+
   //*************** BOARD CREATION **************//
 
   //**Establish Virtual Board **/
-  const MOLEFIELD = new Board();
+  const MOLEFIELD = new Board(height, width);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (moleList.includes(JSON.stringify([x, y]))) {
@@ -313,6 +375,7 @@ function playGame(difficulty) {
         if (!this.classList.contains("flagged")) {
           revealSub(currentSquare);
           if (currentSquare.isMole) {
+            gameLost = true;
             document.getElementById(currentSquare.coordinates).style.backgroundImage = "url('img/moles.png')";
             moleSqrs = [...moleList];
             moleSqrs.splice(moleSqrs.indexOf(currentSquare.coordinates), 1);
@@ -330,10 +393,22 @@ function playGame(difficulty) {
                 setTimeout(molePop, timer);
               }
             };
-            console.log("still working");
-            setTimeout(molePop, 750)
-            gameLost = true;
-            endGame();
+
+            if(mediaQuery.matches) {
+              setTimeout(molePop, 750);
+              endGame();
+            } else {
+              let endGameDelay = 500;
+              for (i = 0; i < moleList.length; i++) {
+                toAdd = 400 - i * 25;
+                if (toAdd >= 50) {
+                  endGameDelay += toAdd
+                } else {
+                  endGameDelay += 50
+                }
+              }
+              setTimeout(endGame, endGameDelay);
+            }
           } else if (currentSquare.adjMoles > 0) {
             this.firstChild.style.opacity = 1;
           } else {
@@ -415,12 +490,23 @@ function playGame(difficulty) {
           "You woke the moles. The moles are angry. Time to invest in some ankle guards!<br><br>Better luck next time!";
       }
       
-      gsap
-        .timeline()
-        .to(sideBar, {duration: .3, x: '-40vh', ease: 'power2.in'})
-        .set(sideBar, {display: 'none'})
-        .set(endDialogue, {display: "flex", x:'-40vh'})
+      if(mediaQuery.matches) {
+        gsap.to(sideBar, {duration: .3, x: '-40vh', ease: 'power2.in'})
+      } else {
+        gsap.to(sideBar, {duration: .3, y: '40vh', ease: 'power2.in'})
+      }
+      gsap.set(sideBar, {display: 'none', delay: 0.3})
+      if(mediaQuery.matches) {
+        gsap.timeline()
+        .set(endDialogue, {display: "flex", x:'-40vh', delay: 0.000001})
         .to(endDialogue, {duration: .3, x: 0, ease: 'power2.out'})
+      } else {
+        gsap.timeline()
+        .set(endDialogue, {display: "flex", y:'100vh'})
+        .to(endDialogue, {duration: .3, y: 0, ease: 'power2.out'})
+        .set([gameContainer, placeholder], {display: 'none'})
+        .set(sideBarContain, {backgroundColor: '#76bc32'})
+      }
     }
   }
 }
@@ -431,12 +517,10 @@ function playGame(difficulty) {
 //***************************************//
 
 
-function genMoles(difficulty) {
+function genMoles(height, width, difficulty) {
   const moles = [];
   let num_moles = 0;
   let coord;
-  let height = 12;
-  let width = 12;
   if (difficulty == "easy") {
     num_moles = ~~(height * width * 0.12);
   }

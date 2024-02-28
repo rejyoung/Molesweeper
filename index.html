@@ -30,13 +30,19 @@
                 <div class="side-bar-content">
                         <img src="img/molesweeper-logo.png" id="sidebar-logo">
                         <div class="info">
+                            <div id="flag-toggle-button"><img src="img/flag.png"></div>
+                            
                             <div class="flags">
                                 <div id="flags-remaining"></div>
                                 <h3 id="flags-label">Flags Remaining</h3>
                             </div>
-                            <p>Add/Remove Flag:<br><br><span class="key">f</span> + click</p>
+                            
+                            <p id="add-remove">Add/Remove Flag:<br><br><span class="key">f</span> + click</p>
+                            
+                            <img src="img/audio-mobile.svg" id="mobile-mute-unmute">
                         </div>
                 </div>
+
                 <div class="end-dialogue-container">
                     <div class="end-dialogue">
                         <h1></h1>
@@ -45,13 +51,16 @@
                         <button id="play-again">Play Again</button>
                     </div>
                 </div>
+
             </div>
+
             <div class="game-container" style="opacity: 0">
                 <div class="gameboard-background">
                     <div class = 'gameBoard'>
                     </div>
                 </div>
             </div>
+            <div class="placeholder"><img src="img/molesweeper-logo.png"></div>
         </main>
         <img src="img/molesweeper-logo.png" id="intro-logo">
         <div id="startDialogue">
@@ -83,6 +92,7 @@
             <button id="okay">Okay</button>
         </div>
         <script src="js/gsap.min.js"></script>
+        <!-- <script src="js/molesweeper.js"></script> -->
         <script src="js/molesweeper.js"></script>
     </body>
 
