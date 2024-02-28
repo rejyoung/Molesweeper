@@ -16,6 +16,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     font-family: "Fredoka", sans-serif;
+    color: black;
 }
 
 h1 {
@@ -26,13 +27,14 @@ h1 {
 }
 
 button {
-    padding: 20px;
-    margin: 10px;
-    border-radius: 30px;
-    font-size: 30px;
+    padding: 2dvh;
+    margin: 1dvh;
+    border-radius: 3dvh;
+    font-size: 3dvh;
     font-family: 'Fredoka', sans-serif;
     border: none;
     background-color: var(--green-compliment);
+    color: black;
 }
 
 button:hover {
@@ -55,7 +57,7 @@ main {
     padding: 0;
     overflow-x: hidden;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     position: absolute;
     bottom: 0;
 }
@@ -68,7 +70,7 @@ main {
 
 #intro-logo {
     position: absolute;
-    top:calc(calc((100vh - calc(80vw * (366/1884)))/2) - 12vh);
+    top:calc(calc((100dvh - calc(80vw * (366/1884)))/2) - 12dvh);
     left: 5vw;
     width: 90vw;
     height: calc(80vw * (366/1884));
@@ -77,7 +79,7 @@ main {
 
 #play {
     width: 30vw;
-    height: 10vh;
+    height: 10dvh;
     z-index: 1;
     margin: 0;
     background-color: transparent;
@@ -92,13 +94,13 @@ main {
 
 #startDialogue {
     background-color: white;
-    border-radius: 30px;
-    border: 10px solid var(--green-contrast);
-    padding: 20px;
+    border-radius: 3dvh;
+    border: 1dvh solid var(--green-contrast);
+    padding: 2dvh;
     box-shadow: 5px 5px 10px 0 #00000058;
     margin: auto auto auto auto;
     width: 30vw;
-    height: 10vh;
+    height: 9dvh;
     position: absolute;
     top: 0;
     left: 0;
@@ -110,6 +112,7 @@ main {
     align-items: center;
     opacity: 1;
     z-index: 3;
+    overflow: hidden;
     visibility: hidden;
 }
 
@@ -149,11 +152,11 @@ h2 {
 }
 
 .intro-text p{
-    font-size: 24px;
+    font-size: 3dvh;
     line-height: 38px;
     margin-bottom: 0;
     overflow-y: scroll;
-    max-height: 60vh;
+    max-height: 60dvh;
 }
 
 #okay {
@@ -164,15 +167,15 @@ h2 {
 
 .placeholder {
     background-color: var(--green-compliment);
-    height: 10vh;
+    height: 10dvh;
     width: 100vw;
     display: none;
     text-align: center;
 }
 
 .placeholder img {
-    margin: 0.5vh 2vw;
-    height: 9vh;
+    margin: 0.5dvh 2vw;
+    height: 9dvh;
     width: auto;
     max-width: 96vw;
 }
@@ -195,7 +198,7 @@ h2 {
 .side-bar-content {
     padding: 0;
     margin:0;
-    height: 10vh;
+    height: 10dvh;
     display: flex;
     justify-content: space-between;
 }
@@ -215,16 +218,16 @@ h2 {
 }
 
 #flag-toggle-button, #mobile-mute-unmute {
-    height: 10vh;
-    width: calc(10vh + 20px);
+    height: 10dvh;
+    width: calc(10dvh + 20px);
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-basis: 10vh;
+    flex-basis: 10dvh;
 }
 
 #mobile-mute-unmute {
-    padding: 1vh;
+    padding: 1dvh;
 }
 
 .flag-selected {
@@ -244,15 +247,15 @@ h2 {
     background-color: white;
     border: 5px solid var(--green-contrast);
     border-radius: 20px;
-    height: 9vh;
+    height: 9dvh;
 }
 
 #flags-remaining {
     color: var(--green-contrast);
     font-family: "Irish Grover", sans-serif;
-    font-size: 6vh;
-    height: 8vh;
-    width: 8vh;
+    font-size: 6dvh;
+    height: 8dvh;
+    width: 8dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -262,7 +265,7 @@ h2 {
 #flags-label{
     display: inline-block;
     text-align: left;
-    font-size: 2vh;
+    font-size: 2dvh;
     /* margin-right: 2vw; */
 }
 
@@ -277,9 +280,9 @@ h2 {
 .end-dialogue-container {
     background-color: white;
     border: 10px solid var(--green-contrast);
-    padding: 5vh 5vw;
+    padding: 5dvh 5vw;
     margin: 0;
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
     position: absolute;
     bottom: 0;
@@ -287,7 +290,7 @@ h2 {
 }
 
 .end-dialogue {
-    height: 90vh;
+    height: 90dvh;
     width: 90vw;
     display: flex;
     flex-direction: column;
@@ -297,11 +300,11 @@ h2 {
 
 .end-dialogue h1 {
     color: var(--green-contrast);
-    font-size: 7vh;
+    font-size: 7dvh;
 }
 
 .end-dialogue p {
-    font-size: 30px;
+    font-size: 3dvh;
     flex-grow: 1;
 }
 
@@ -314,6 +317,7 @@ h2 {
 #play-again {
     box-shadow: inset 0 0 0 10px var(--green-contrast);
     background-color: white;
+    padding: calc(2dvh + 10px);
     flex-shrink: 0;
 }
 
@@ -329,8 +333,8 @@ h2 {
 
 .game-container {
     cursor: pointer;
-    width: 100vh;
-    height: 80vh;
+    width: 100dvh;
+    height: 80dvh;
     padding: 0;
     margin: 0;
     flex-shrink: 0;
@@ -343,14 +347,14 @@ h2 {
     background-position: center;
     background-repeat: no-repeat;
     width: 100vw;
-    height: 80vh;
+    height: 80dvh;
     margin: 0;
     padding: 0;
 }
 
 .gameBoard {
     width: 100vw;
-    height: 80vh;
+    height: 80dvh;
     display: grid;
     column-gap: 0;
     padding: 5px;
@@ -400,10 +404,10 @@ h2 {
 
 #mute-unmute {
     position: fixed;
-    bottom: 2vh;
-    right: 2vh;
+    bottom: 2dvh;
+    right: 2dvh;
     width: auto;
-    height: 6vh;
+    height: 6dvh;
     opacity: .8;
     display: none;
     z-index: 5;
@@ -433,7 +437,7 @@ h2 {
     
     #intro-logo {
         display: flex; /* Added */
-        top: calc((100vh - calc(80vw * (366 / 1884))) / 2);
+        top: calc((100dvh - calc(80vw * (366 / 1884))) / 2);
         left: 10vw;
         width: 80vw;
         justify-content: center; /* Added */
@@ -525,7 +529,7 @@ h2 {
     .end-dialogue-container {
         border-radius: 30px;
         padding: 40px;
-        margin: 1% 0 1% 10vh;
+        margin: 1% 0 1% 10dvh;
         height: 98%;
         max-width: 40vw;
         position: static;
@@ -547,7 +551,7 @@ h2 {
 
     .game-container {
         width: auto;
-        height: 100vh;
+        height: 100dvh;
     }
 
     .gameboard-background {
@@ -557,8 +561,8 @@ h2 {
     }
 
     .gameBoard {
-        width: 100vh;
-        height: 100vh;
+        width: 100dvh;
+        height: 100dvh;
         padding: 23% 23% 20% 20%;
     }
 

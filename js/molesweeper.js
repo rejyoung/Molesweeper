@@ -12,6 +12,7 @@ const hardBtn = document.querySelector("#hard");
 const startBtn = document.querySelector("#start-game");
 const againBtn = document.querySelector('#play-again');
 const introText = document.querySelector('.intro-text');
+const introTextP = document.querySelector(".intro-text p");
 const okayBtn = document.querySelector('#okay');
 const sideBar = document.querySelector('.side-bar-content');
 const sideBarContain = document.querySelector('.side-bar')
@@ -29,20 +30,36 @@ const placeholder = document.querySelector(".placeholder");
 const flagToggleBtn = document.querySelector("#flag-toggle-button")
 const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
 const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
-
+let flagDialogue;
 
 window.addEventListener('load', function(){
   // screen.orientation.lock('portrait')
   
   if(mediaQuery.matches){
     gsap.set(sideBar, {x: '-40vw', visibility: 'visible'})
-  } else {gsap.set(sideBarContain, { y: "10vh", visibility: "visible" });}
+    flagDialogue = `holding down the <span class="key">f</span> key before you click. It will mark the hill 
+                 so you can remember and will keep you from accidentally smashing the hill. 
+                 You can unflag a hill the same way.`;
+  } else {
+    gsap.set(sideBarContain, { y: "10dvh", visibility: "visible" });
+    flagDialogue = `tapping the flag icon in the toolbar at the bottom of your screen to enter flagging mode. Then simply tap the molehills you want to flag. It will mark the hill so you can remember and will keep you from accidentally smashing the hill in the future. Tap again to unflag the molehill. To exit flagging mode, just tap the flag icon again.`;
+  }
+
+  introTextP.innerHTML = `You just discovered that your yard is covered in molehills. 
+                    Smash them down so the grass can grow, but be careful! 
+                Some of the hills have moles sleeping underneath, and they don't like to be woken up.
+                After you smash a hill, you'll see a handy-dandy number telling you whether there are any moles
+                 under the adjacent molehills, and if so, how many there are.<br><br>
+                 Think you know where a mole is sleeping? Flag it by ${flagDialogue} (Hint: You have the same number of flags as there are moles.)<br><br>
+                 To win, smash all the hills except those that a mole is sleeping under. If you wake a mole, though, it'll wake its friends, and the game will be over.<br><br>
+                 Good luck!`
+
 
   gsap.set([introLogo, playBtn, startDialogue], {visibility: 'visible'})
   gsap.from(introLogo, {duration: 1, rotation: 360, opacity: 0, scale: .02, ease: 'power2.out', transformOrigin: '50% 50%', delay: 0.0000001})
   if(mediaQuery.matches) {
     gsap.timeline()
-    .to(introLogo, {duration: .5, scale: .5, y: '-22vh', delay: 1})
+    .to(introLogo, {duration: .5, scale: .5, y: '-22dvh', delay: 1})
     .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out'})
     .set(gameContainer, {x: '100vw'})
   } else {
@@ -56,11 +73,11 @@ playBtn.addEventListener("click", gameSetup);
 
 againBtn.addEventListener('click', function() {
     if(mediaQuery.matches) {
-      gsap.to(endDialogue, {duration: .3, x: '-100vh'})
+      gsap.to(endDialogue, {duration: .3, x: '-100dvh'})
       gsap.to(muteBtn, {duration: .3, opacity: 0})
       gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: function() {location.reload()}})
     } else {
-      gsap.to(endDialogue, {duration: .3, y: '100vh', onComplete: function() {location.reload()}})
+      gsap.to(endDialogue, {duration: .3, y: '100dvh', onComplete: function() {location.reload()}})
     }
 });
     
@@ -203,11 +220,11 @@ function gameSetup() {
     if(mediaQuery.matches) {
       gsap.timeline()
       .to(startDialogue, {duration: .5, width: '50vw', opacity: 1, ease: "back-out"})
-      .to(startDialogue, {duration: .5, height: '70vh', ease: 'back-out'}, '-=.4')
+      .to(startDialogue, {duration: .5, height: '70dvh', ease: 'back-out'}, '-=.4')
     } else {
       gsap.timeline()
       .to(startDialogue, {duration: .5, width: '100vw', opacity: 1, ease: "back-out"})
-      .to(startDialogue, {duration: .3, height: '100vh', borderRadius: 0, ease: 'back-out'}, '-=.4')
+      .to(startDialogue, {duration: .3, height: '100dvh', borderRadius: 0, ease: 'back-out'}, '-=.4')
     }
 
     gsap.set(introLogo, {display: 'none', delay: 1.3})
@@ -238,14 +255,15 @@ function playGame(difficulty) {
   let tilesRevealed = 0;
   flagCounter.innerText = flagsRemaining;
 
-  gsap.to([difSelect, startBtn], { duration: 0.2, opacity: 0 })
+
+  gsap.to([difSelect, startBtn], { duration: .6, y: '-150dvh' })
   if(mediaQuery.matches) {
-    gsap.to(startDialogue, { duration: 0.2, height: "90vh", delay: 0.2})
+    gsap.to(startDialogue, { duration: 0.2, height: "90dvh", delay: 0.2})
   }
   gsap.timeline()
-    .set([difSelect, startBtn], { display: "none", delay: 0.2})
-    .set([introText, okayBtn], { display: "block" }, "<")
-    .to([introText, okayBtn], { duration: 0.2, opacity: 1 })
+    .set([difSelect, startBtn], { display: "none", delay: 0.5})
+    .set([introText, okayBtn], { display: "block", y:'100dvh', opacity: 1}, "<")
+    .to([introText, okayBtn], { duration: 0.5, y:0 })
     .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<")
   ;
   
@@ -393,9 +411,8 @@ function playGame(difficulty) {
                 setTimeout(molePop, timer);
               }
             };
-
+            setTimeout(molePop, 750);
             if(mediaQuery.matches) {
-              setTimeout(molePop, 750);
               endGame();
             } else {
               let endGameDelay = 500;
@@ -491,18 +508,18 @@ function playGame(difficulty) {
       }
       
       if(mediaQuery.matches) {
-        gsap.to(sideBar, {duration: .3, x: '-40vh', ease: 'power2.in'})
+        gsap.to(sideBar, {duration: .3, x: '-40dvh', ease: 'power2.in'})
       } else {
-        gsap.to(sideBar, {duration: .3, y: '40vh', ease: 'power2.in'})
+        gsap.to(sideBar, {duration: .3, y: '40dvh', ease: 'power2.in'})
       }
       gsap.set(sideBar, {display: 'none', delay: 0.3})
       if(mediaQuery.matches) {
         gsap.timeline()
-        .set(endDialogue, {display: "flex", x:'-40vh', delay: 0.000001})
+        .set(endDialogue, {display: "flex", x:'-40dvh', delay: 0.000001})
         .to(endDialogue, {duration: .3, x: 0, ease: 'power2.out'})
       } else {
         gsap.timeline()
-        .set(endDialogue, {display: "flex", y:'100vh'})
+        .set(endDialogue, {display: "flex", y:'100dvh'})
         .to(endDialogue, {duration: .3, y: 0, ease: 'power2.out'})
         .set([gameContainer, placeholder], {display: 'none'})
         .set(sideBarContain, {backgroundColor: '#76bc32'})
