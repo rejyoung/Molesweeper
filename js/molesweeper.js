@@ -32,9 +32,17 @@ const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
 const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
 let flagDialogue;
 
+
 window.addEventListener('load', function(){
-  
-  
+  if(document.cookie) {
+    if(document.cookie=="muted=true") {
+      soundtrack.muted=true
+      muteBtn.src="img/audio-muted.svg";
+      mobileMuteBtn.src="img/audio-muted-mobile.svg"
+    }
+  } else {
+    document.cookie = "muted=false"
+  }
   if(mediaQuery.matches){
     gsap.set(sideBar, { x: "-40vw", visibility: "visible" });
     flagDialogue = `holding down the <span class="key">f</span> key before you click. It will mark the hill 
@@ -83,10 +91,12 @@ againBtn.addEventListener('click', function() {
 muteBtn.addEventListener('click', function() {
   if (!soundtrack.muted) {
     soundtrack.muted = true;
-    muteBtn.src='img/audio-muted.svg'
+    muteBtn.src='img/audio-muted.svg';
+    document.cookie="muted=true"
   } else {
     soundtrack.muted = false;
     muteBtn.src='img/audio.svg'
+    document.cookie="muted=false"
   }
 })
 
@@ -94,9 +104,11 @@ mobileMuteBtn.addEventListener("click", function () {
   if (!soundtrack.muted) {
     soundtrack.muted = true;
     mobileMuteBtn.src = "img/audio-muted-mobile.svg";
+    document.cookie="muted=true"
   } else {
     soundtrack.muted = false;
     mobileMuteBtn.src = "img/audio-mobile.svg";
+    document.cookie="muted=false"
   }
 });
 
