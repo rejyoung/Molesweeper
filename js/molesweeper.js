@@ -383,6 +383,10 @@ function playGame(difficulty) {
             this.classList.remove("flagged");
             flagsRemaining += 1;
             flagCounter.innerText = flagsRemaining;
+            if(!mediaQuery.matches) {
+              this.removeAttribute('style')
+              console.log('not working')
+            }
           } else {
             if (flagsRemaining > 0) {
               this.classList.add("flagged");

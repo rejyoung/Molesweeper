@@ -401,11 +401,8 @@ h2 {
     background-image: url('../img/dirt-mound.png')
 }
 
-.hidden:hover {
-    background-image: url('../img/dirt-mound-squashed.png')
-}
 
-.flagged, .flagged:hover {
+.flagged {
     background-image: url('../img/flagged.png')
 }
 
@@ -584,6 +581,14 @@ h2 {
     .square p {
         font-size: 40px;
         line-height: 30px;
+    }
+
+    .flagged:hover {
+        background-image: url('../img/flagged.png')
+    }   
+
+    .hidden:hover {
+        background-image: url('../img/dirt-mound-squashed.png')
     }
 
     #mute-unmute {
