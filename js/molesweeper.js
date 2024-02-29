@@ -36,7 +36,6 @@ window.addEventListener('load', function(){
   
   
   if(mediaQuery.matches){
-    screen.orientation.lock('portrait')
     gsap.set(sideBar, { x: "-40vw", visibility: "visible" });
     flagDialogue = `holding down the <span class="key">f</span> key before you click. It will mark the hill 
                  so you can remember and will keep you from accidentally smashing the hill. 
