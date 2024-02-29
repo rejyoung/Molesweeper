@@ -391,10 +391,6 @@ function playGame(difficulty) {
             }
           }
         }
-      } else if (flagMode && this.classList.contains("flagged")) {
-          this.classList.remove("flagged");
-          flagsRemaining += 1;
-          flagCounter.innerText = flagsRemaining;
       } else {
         if (!this.classList.contains("flagged")) {
           revealSub(currentSquare);
