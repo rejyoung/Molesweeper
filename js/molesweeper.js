@@ -245,6 +245,7 @@ function gameSetup() {
 function playGame(difficulty) {
   //*************** INITIALIZATION **************//
   let isFDown = false;
+  let flagMode = false;
   let currentHover = [];
   let gameLost = false;
   let gameWon = false;
@@ -313,10 +314,12 @@ function playGame(difficulty) {
   flagToggleBtn.addEventListener('click', function() {
     if(!isFDown) {
       isFDown = true
+      flagMode = true
       this.classList.add("flag-selected")
     } else {
       isFDown = false
       this.classList.remove("flag-selected")
+      flagMode = false;
     }
   }); 
 
@@ -388,17 +391,23 @@ function playGame(difficulty) {
             }
           }
         }
+      } else if (flagMode && this.classList.contains("flagged")) {
+          this.classList.remove("flagged");
+          flagsRemaining += 1;
+          flagCounter.innerText = flagsRemaining;
       } else {
         if (!this.classList.contains("flagged")) {
           revealSub(currentSquare);
           if (currentSquare.isMole) {
             gameLost = true;
-            document.getElementById(currentSquare.coordinates).style.backgroundImage = "url('img/moles.png')";
+            document.getElementById(
+              currentSquare.coordinates
+            ).style.backgroundImage = "url('img/moles.png')";
             moleSqrs = [...moleList];
             moleSqrs.splice(moleSqrs.indexOf(currentSquare.coordinates), 1);
             let timer = 400;
             function molePop() {
-              let moleCoord = moleSqrs.pop()
+              let moleCoord = moleSqrs.pop();
               let sqr = MOLEFIELD.getSquare(moleCoord);
               revealSub(sqr);
               document.getElementById(moleCoord).style.backgroundImage =
@@ -406,21 +415,21 @@ function playGame(difficulty) {
               if (moleSqrs.length > 0) {
                 if (timer > 50) {
                   timer -= 25;
-                };
+                }
                 setTimeout(molePop, timer);
               }
-            };
+            }
             setTimeout(molePop, 750);
-            if(mediaQuery.matches) {
+            if (mediaQuery.matches) {
               endGame();
             } else {
               let endGameDelay = 500;
               for (i = 0; i < moleList.length; i++) {
                 toAdd = 400 - i * 25;
                 if (toAdd >= 50) {
-                  endGameDelay += toAdd
+                  endGameDelay += toAdd;
                 } else {
-                  endGameDelay += 50
+                  endGameDelay += 50;
                 }
               }
               setTimeout(endGame, endGameDelay);
