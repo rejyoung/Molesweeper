@@ -81,22 +81,22 @@ againBtn.addEventListener('click', function() {
 });
     
 muteBtn.addEventListener('click', function() {
-  if (!soundtrack.volume == 0) {
-    soundtrack.volume = 0
+  if (!soundtrack.muted) {
+    soundtrack.muted = true;
     muteBtn.src='img/audio-muted.svg'
   } else {
-    soundtrack.volume = 0.4
+    soundtrack.muted = false;
     muteBtn.src='img/audio.svg'
   }
 })
 
 mobileMuteBtn.addEventListener("click", function () {
-  if (!soundtrack.volume == 0) {
-    soundtrack.volume = 0;
-    mobileMuteBtn.src = "img/audio-muted-mobile.svg";
+  if (!soundtrack.muted) {
+    soundtrack.muted = true;
+    muteBtn.src = "img/audio-muted.svg";
   } else {
-    soundtrack.volume = 0.4;
-    mobileMuteBtn.src = "img/audio-mobile.svg";
+    soundtrack.muted = false;
+    muteBtn.src = "img/audio.svg";
   }
 });
 
