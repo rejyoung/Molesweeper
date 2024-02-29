@@ -180,7 +180,7 @@ h2 {
     opacity: .5;
 }
 
-.placeholder {
+.mobile-logo-banner {
     background-color: var(--green-compliment);
     height: 10dvh;
     width: 100vw;
@@ -188,7 +188,7 @@ h2 {
     text-align: center;
 }
 
-.placeholder img {
+.mobile-logo-banner img {
     margin: 0.5dvh 2vw;
     height: 9dvh;
     width: auto;
@@ -222,6 +222,21 @@ h2 {
     display: none
 }
 
+.mobile-logo-banner {
+    background-color: var(--green-compliment);
+    height: 10dvh;
+    width: 100vw;
+    display: none;
+    text-align: center;
+}
+
+.mobile-logo-banner img {
+    margin: 0.5dvh 2vw;
+    height: 9dvh;
+    width: auto;
+    max-width: 96vw;
+}
+
 .info {
     flex-grow: 1;
     display: flex;
@@ -232,7 +247,7 @@ h2 {
     padding: 3px
 }
 
-#flag-toggle-button, #mobile-mute-unmute {
+#flag-toggle-button, .mobile-mute-unmute-container {
     height: 10dvh;
     width: calc(10dvh + 20px);
     display: flex;
@@ -242,15 +257,15 @@ h2 {
 }
 
 #mobile-mute-unmute {
-    padding: 1dvh;
+    padding: 1dvh 1dvh 1dvh 0;
+    justify-self: center;
+    height: 100%;
+    width: auto;
 }
 
-.flag-selected {
-    background-color: rgba(255, 255, 255, 0.303);
-}
 
 #flag-toggle-button img {
-    height: 70%;
+    height: 75%;
     width: auto;
 }
 

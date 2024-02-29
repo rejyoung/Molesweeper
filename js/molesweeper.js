@@ -26,7 +26,7 @@ const pop = document.querySelector('#pop')
 const muteBtn = document.querySelector('#mute-unmute')
 const mobileMuteBtn = document.querySelector("#mobile-mute-unmute");
 const soundtrack = document.querySelector('#soundtrack')
-const placeholder = document.querySelector(".placeholder");
+const mobileLogoBanner = document.querySelector(".mobile-logo-banner");
 const flagToggleBtn = document.querySelector("#flag-toggle-button")
 const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
 const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
@@ -242,7 +242,7 @@ function gameSetup() {
 
     if(!mediaQuery.matches) {
       gsap.timeline()
-      .set(placeholder, {display: 'block', delay: 1.3})
+      .set(mobileLogoBanner, {display: 'block', delay: 1.3})
       .set(sideBarContain, {display: 'block'})
     }
 
@@ -328,10 +328,12 @@ function playGame(difficulty) {
       isFDown = true
       flagMode = true
       this.classList.add("flag-selected")
+      this.firstChild.src="img/flag-selected.png"
     } else {
       isFDown = false
       this.classList.remove("flag-selected")
       flagMode = false;
+      this.firstChild.src="img/flag.png"
     }
   }); 
 
@@ -541,7 +543,7 @@ function playGame(difficulty) {
         gsap.timeline()
         .set(endDialogue, {display: "flex", y:'100dvh'})
         .to(endDialogue, {duration: .3, y: 0, ease: 'power2.out'})
-        .set([gameContainer, placeholder], {display: 'none'})
+        .set([gameContainer, mobileLogoBanner], {display: 'none'})
         .set(sideBarContain, {backgroundColor: '#76bc32'})
       }
     }
