@@ -93,10 +93,10 @@ muteBtn.addEventListener('click', function() {
 mobileMuteBtn.addEventListener("click", function () {
   if (!soundtrack.muted) {
     soundtrack.muted = true;
-    muteBtn.src = "img/audio-muted.svg";
+    mobileMuteBtn.src = "img/audio-muted-mobile.svg";
   } else {
     soundtrack.muted = false;
-    muteBtn.src = "img/audio.svg";
+    mobileMuteBtn.src = "img/audio-mobile.svg";
   }
 });
 
