@@ -30,12 +30,16 @@ const mobileLogoBanner = document.querySelector(".mobile-logo-banner");
 const flagToggleBtn = document.querySelector("#flag-toggle-button")
 const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
 const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
+const tl = gsap.timeline()
+const cookieObj = makeCookieObj()
+const replay = cookieObj['playAgain']
+
 let flagDialogue;
 
 
-window.addEventListener('load', function(){
-  if(document.cookie) {
-    if(document.cookie=="muted=true") {
+window.addEventListener('load', () => {
+  if(cookieObj) {
+    if(cookieObj['muted']=="true") {
       soundtrack.muted=true
       muteBtn.src="img/audio-muted.svg";
       mobileMuteBtn.src="img/audio-muted-mobile.svg"
@@ -43,13 +47,18 @@ window.addEventListener('load', function(){
   } else {
     document.cookie = "muted=false"
   }
+  
   if(mediaQuery.matches){
-    gsap.set(sideBar, { x: "-40vw", visibility: "visible" });
+    tl
+    .set(sideBar, {x: "-40vw"})
+    .set(sideBar, {visibility: "visible"}, '+= 1');
     flagDialogue = `holding down the <span class="key">f</span> key before you click. It will mark the hill 
                  so you can remember and will keep you from accidentally smashing the hill. 
                  You can unflag a hill the same way.`;
   } else {
-    gsap.set(sideBarContain, { y: "10dvh", visibility: "visible" });
+    tl
+    .set(sideBarContain, {y: "10dvh"})
+    .set(sideBarContain, {visibility: "visible"}, '+= 1');
     flagDialogue = `tapping the flag icon in the toolbar at the bottom of your screen to enter flagging mode. Then simply tap the molehills you want to flag. It will mark the hill so you can remember and will keep you from accidentally smashing the hill in the future. Tap again to unflag the molehill. To exit flagging mode, just tap the flag icon again.`;
   }
 
@@ -61,34 +70,45 @@ window.addEventListener('load', function(){
                  Think you know where a mole is sleeping? Flag it by ${flagDialogue} (Hint: You have the same number of flags as there are moles.)<br><br>
                  To win, smash all the hills except those that a mole is sleeping under. If you wake a mole, though, it'll wake its friends, and the game will be over.<br><br>
                  Good luck!`
-
-  gsap.set([introLogo, playBtn, startDialogue], {visibility: 'visible'})
-  gsap.from(introLogo, {duration: 1, rotation: 360, opacity: 0, scale: .02, ease: 'power2.out', transformOrigin: '50% 50%', delay: 0.0000001})
-  if(mediaQuery.matches) {
-    gsap.timeline()
-    .to(introLogo, {duration: .5, scale: .5, y: '-22dvh', delay: 1})
-    .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out'})
-    .set(gameContainer, {x: '100vw'})
+  if (replay=='true') {
+    if(mediaQuery.matches) {
+      tl
+      .set(startDialogue, {width: '50vw', height: '70dvh', x: '-100vw', opacity: 1})
+    } else {
+      gsap.set(startDialogue, {width: '100vw', height: '100dvh', borderRadius: 0, y: '100dvh', opacity: 1})
+    }
+    gsap.set(startDialogue, {visibility: 'visible', delay: 1.5})
+    setTimeout(()=> gameSetup(), 1500)
   } else {
-    gsap.timeline()
-      .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out', delay: 1})
+    gsap.set([introLogo, playBtn, startDialogue], {visibility: 'visible'})
+    gsap.from(introLogo, {duration: 1, rotation: 360, opacity: 0, scale: .02, ease: 'power2.out', transformOrigin: '50% 50%', delay: 0.0000001})
+    if(mediaQuery.matches) {
+      tl
+      .to(introLogo, {duration: .5, scale: .5, y: '-22dvh', delay: 1})
+      .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out'})
       .set(gameContainer, {x: '100vw'})
+    } else {
+      tl
+        .from(startDialogue, {duration: .5, scale: .2, opacity: 0, ease: 'back.out', delay: 1})
+        .set(gameContainer, {x: '100vw'})
+    }
   }
 })
 
 playBtn.addEventListener("click", gameSetup);
 
-againBtn.addEventListener('click', function() {
+againBtn.addEventListener('click', () => {
+  document.cookie = "playAgain=true; max-age=8"
     if(mediaQuery.matches) {
       gsap.to(endDialogue, {duration: .3, x: '-100dvh'})
       gsap.to(muteBtn, {duration: .3, opacity: 0})
-      gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: function() {location.reload()}})
+      gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: () => {location.reload()}})
     } else {
-      gsap.to(endDialogue, {duration: .3, y: '100dvh', onComplete: function() {location.reload()}})
+      gsap.to(endDialogue, {duration: .3, y: '100dvh', onComplete: () => {location.reload()}})
     }
 });
     
-muteBtn.addEventListener('click', function() {
+muteBtn.addEventListener('click', () => {
   if (!soundtrack.muted) {
     soundtrack.muted = true;
     muteBtn.src='img/audio-muted.svg';
@@ -100,7 +120,7 @@ muteBtn.addEventListener('click', function() {
   }
 })
 
-mobileMuteBtn.addEventListener("click", function () {
+mobileMuteBtn.addEventListener("click", () => {
   if (!soundtrack.muted) {
     soundtrack.muted = true;
     mobileMuteBtn.src = "img/audio-muted-mobile.svg";
@@ -118,25 +138,18 @@ mobileMuteBtn.addEventListener("click", function () {
 //***************************************//
 
 class Square {
-    constructor(column, row, isMole = false, isRevealed = false, isFlagged = false) {
+    constructor(column, row, isMole = false, isRevealed = false) {
         this.col = column;
         this.row = row;
         this.isMole = isMole;
         this.isRevealed = isRevealed;
-        this.isFlagged = isFlagged;
         this.adjMoles = 0;
         this.adjacentList = []
     };
     setRevealed() {
         this.revealed = true;
     };
-    toggleFlag() {
-        if (this.isFlagged === false) {
-            this.isFlagged = true
-        } else {
-            this.isFlagged = false
-        }
-    }
+    
     addAdj(coord) {
         this.adjacentList.push(coord)
     }
@@ -195,58 +208,100 @@ class Board {
 
 function gameSetup() {
    let difficulty;
-    easyBtn.addEventListener('click', function() {
-        this.classList.add('selected');
-        difficulty = 'easy';
-        if (medBtn.classList.contains('selected')) {medBtn.classList.remove('selected')};
-        if (hardBtn.classList.contains('selected')) {hardBtn.classList.remove('selected')};
-        if (startBtn.style.opacity == 0) {
-            gsap.to(startBtn, {duration: .2, opacity: 1, scale: 1, ease: 'back-out'});
-            startBtn.addEventListener('click', function(){playGame(difficulty)});
-        };
+    easyBtn.addEventListener("click", () => {
+      easyBtn.classList.add("selected");
+      console.log('selected')
+      difficulty = "easy";
+      if (medBtn.classList.contains("selected")) {
+        medBtn.classList.remove("selected");
+      }
+      if (hardBtn.classList.contains("selected")) {
+        hardBtn.classList.remove("selected");
+      }
+      if (startBtn.style.opacity == 0) {
+        gsap.to(startBtn, {
+          duration: 0.2,
+          opacity: 1,
+          scale: 1,
+          ease: "back-out",
+        });
+        startBtn.addEventListener("click", () => {
+          playGame(difficulty);
+        });
+      }
     });
-    medBtn.addEventListener('click', function() {
-        this.classList.add('selected');
-        difficulty = 'medium';
-        if (easyBtn.classList.contains('selected')) {easyBtn.classList.remove('selected')};
-        if (hardBtn.classList.contains('selected')) {hardBtn.classList.remove('selected')};
-        if (startBtn.style.opacity == 0) {
-            gsap.to(startBtn, {duration: .2, opacity: 1, scale: 1, ease: 'back-out'});
-            startBtn.addEventListener('click', function(){playGame(difficulty)});
-        };
+    medBtn.addEventListener("click", () => {
+      medBtn.classList.add("selected");
+      difficulty = "medium";
+      if (easyBtn.classList.contains("selected")) {
+        easyBtn.classList.remove("selected");
+      }
+      if (hardBtn.classList.contains("selected")) {
+        hardBtn.classList.remove("selected");
+      }
+      if (startBtn.style.opacity == 0) {
+        gsap.to(startBtn, {
+          duration: 0.2,
+          opacity: 1,
+          scale: 1,
+          ease: "back-out",
+        });
+        startBtn.addEventListener("click", () => {
+          playGame(difficulty);
+        });
+      }
     });
-    hardBtn.addEventListener('click', function() {
-        this.classList.add('selected');
-        difficulty = 'hard'
-        if (medBtn.classList.contains('selected')) {medBtn.classList.remove('selected')};
-        if (easyBtn.classList.contains('selected')) {easyBtn.classList.remove('selected')};
-        if (startBtn.style.opacity == 0) {
-            gsap.to(startBtn, {duration: .2, opacity: 1, scale: 1, ease: 'back-out'});
-            startBtn.addEventListener('click', function(){playGame(difficulty)});
-        };
+    hardBtn.addEventListener("click", () => {
+      hardBtn.classList.add("selected");
+      difficulty = "hard";
+      if (medBtn.classList.contains("selected")) {
+        medBtn.classList.remove("selected");
+      }
+      if (easyBtn.classList.contains("selected")) {
+        easyBtn.classList.remove("selected");
+      }
+      if (startBtn.style.opacity == 0) {
+        gsap.to(startBtn, {
+          duration: 0.2,
+          opacity: 1,
+          scale: 1,
+          ease: "back-out",
+        });
+        startBtn.addEventListener("click", function () {
+          playGame(difficulty);
+        });
+      }
     });
     
     
     gsap.to(playBtn, {duration: .3, scale: 0, opacity: 0})
-    if(mediaQuery.matches) {
-      gsap.timeline()
-      .to(startDialogue, {duration: .5, width: '50vw', opacity: 1, ease: "back-out"})
-      .to(startDialogue, {duration: .5, height: '70dvh', ease: 'back-out'}, '-=.4')
+    if(replay=='true') {
+      if(mediaQuery.matches) {
+        gsap.to(startDialogue, {duration: .5, x: 0, ease: "power1.out"})
+      } else {
+        gsap.to(startDialogue, {duration: .5, y: 0, ease: "power1.out"})
+      }
     } else {
-      gsap.timeline()
-      .to(startDialogue, {duration: .5, width: '100vw', opacity: 1, ease: "back-out"})
-      .to(startDialogue, {duration: .3, height: '100dvh', borderRadius: 0, ease: 'back-out'}, '-=.4')
+      if(mediaQuery.matches) {
+        tl
+        .to(startDialogue, {duration: .5, width: '50vw', opacity: 1, ease: "back-out"})
+        .to(startDialogue, {duration: .5, height: '70dvh', ease: 'back-out'}, '-=.4')
+      } else {
+        tl
+        .to(startDialogue, {duration: .5, width: '100vw', opacity: 1, ease: "back-out"})
+        .to(startDialogue, {duration: .3, height: '100dvh', borderRadius: 0, ease: 'back-out'}, '-=.4')
+      }
     }
 
     gsap.set(introLogo, {display: 'none', delay: 1.3})
 
     if(!mediaQuery.matches) {
-      gsap.timeline()
+      tl
       .set(mobileLogoBanner, {display: 'block', delay: 1.3})
       .set(sideBarContain, {display: 'block'})
     }
 
-    gsap.timeline()
+    tl
     .set(playBtn, {display: 'none', delay: .5})
     .set(difSelect, {display: 'block'}, '<')
     .set(startBtn, {display: 'block', opacity: 0, scale: .2}, '<')
@@ -267,17 +322,27 @@ function playGame(difficulty) {
   let tilesRevealed = 0;
   flagCounter.innerText = flagsRemaining;
 
-
-  gsap.to([difSelect, startBtn], { duration: .6, y: '-150dvh' })
-  if(mediaQuery.matches) {
-    gsap.to(startDialogue, { duration: 0.2, height: "90dvh", delay: 0.2})
+  if (replay=='true') {
+    gsap.to(startDialogue, { duration: 0.2, opacity: 0 });
+    if (mediaQuery.matches) {
+      gsap.to(sideBar, { duration: 0.2, x: 0, delay: 0.2 });
+    } else {
+      gsap.to(sideBarContain, { duration: 0.2, y: 0, delay: 0.2 });
+    }
+    tl
+      .to(startDialogue, { display: "none", delay: 0.2 })
+      .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<");;
+  } else {
+    gsap.to([difSelect, startBtn], { duration: .6, y: '-150dvh' })
+    if(mediaQuery.matches) {
+      gsap.to(startDialogue, { duration: 0.2, height: "90dvh", delay: 0.2})
+    }
+    tl
+      .set([difSelect, startBtn], { display: "none", delay: 0.5})
+      .set([introText, okayBtn], { display: "block", y:'100dvh', opacity: 1}, "<")
+      .to([introText, okayBtn], { duration: 0.5, y:0 })
+      .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<");
   }
-  gsap.timeline()
-    .set([difSelect, startBtn], { display: "none", delay: 0.5})
-    .set([introText, okayBtn], { display: "block", y:'100dvh', opacity: 1}, "<")
-    .to([introText, okayBtn], { duration: 0.5, y:0 })
-    .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<")
-  ;
   
   soundtrack.volume = 0.4
   soundtrack.play()
@@ -285,17 +350,17 @@ function playGame(difficulty) {
     muteBtn.style.display = 'inline-block'
   }
 
-  okayBtn.addEventListener("click", function () {
-    gsap.to(startDialogue, { duration: 0.2, opacity: 0 })
-    if(mediaQuery.matches) {
-      gsap.to(sideBar, { duration: 0.2, x: 0, delay: 0.2})
+  okayBtn.addEventListener("click", () => {
+    gsap.to(startDialogue, { duration: 0.2, opacity: 0 });
+    if (mediaQuery.matches) {
+      gsap.to(sideBar, { duration: 0.2, x: 0, delay: 0.2 });
     } else {
-      gsap.to(sideBarContain, { duration: 0.2, y: 0, delay: 0.2})
+      gsap.to(sideBarContain, { duration: 0.2, y: 0, delay: 0.2 });
     }
-    gsap.to(startDialogue, { display: "none", delay: 0.2});
+    gsap.to(startDialogue, { display: "none", delay: 0.2 });
   });
 
-  window.addEventListener("keydown", function (event) {
+  window.addEventListener("keydown", event => {
     if (event.key === "f") {
       isFDown = true;
       for (let coord of currentHover) {
@@ -312,7 +377,7 @@ function playGame(difficulty) {
     }
   });
 
-  window.addEventListener("keyup", function (event) {
+  window.addEventListener("keyup", event => {
     if (event.key === "f") {
       isFDown = false;
       if (!gameLost && !gameWon) {
@@ -323,17 +388,17 @@ function playGame(difficulty) {
     }
   });
 
-  flagToggleBtn.addEventListener('click', function() {
-    if(!isFDown) {
-      isFDown = true
-      flagMode = true
-      this.classList.add("flag-selected")
-      this.firstChild.src="img/flag-selected.png"
+  flagToggleBtn.addEventListener("click", () => {
+    if (!isFDown) {
+      isFDown = true;
+      flagMode = true;
+      this.classList.add("flag-selected");
+      this.firstChild.src = "img/flag-selected.png";
     } else {
-      isFDown = false
-      this.classList.remove("flag-selected")
+      isFDown = false;
+      this.classList.remove("flag-selected");
       flagMode = false;
-      this.firstChild.src="img/flag.png"
+      this.firstChild.src = "img/flag.png";
     }
   }); 
 
@@ -368,7 +433,7 @@ function playGame(difficulty) {
 
   for (square of document.querySelectorAll(".square")) {
     square.addEventListener("click", reveal),
-      square.addEventListener("mouseenter", function () {
+      square.addEventListener("mouseenter", () => {
         if (
           !gameLost &&
           !gameWon &&
@@ -379,7 +444,7 @@ function playGame(difficulty) {
         }
         currentHover.push(this.id);
       }),
-      square.addEventListener("mouseleave", function () {
+      square.addEventListener("mouseleave", () => {
         if (!gameLost && !gameWon) {
           this.removeAttribute("style");
         }
@@ -530,17 +595,17 @@ function playGame(difficulty) {
       }
       
       if(mediaQuery.matches) {
-        gsap.to(sideBar, {duration: .3, x: '-40dvh', ease: 'power2.in'})
+        gsap.to(sideBar, {duration: .3, x: '-50vw', ease: 'power2.in'})
       } else {
         gsap.to(sideBar, {duration: .3, y: '40dvh', ease: 'power2.in'})
       }
       gsap.set(sideBar, {display: 'none', delay: 0.3})
       if(mediaQuery.matches) {
-        gsap.timeline()
-        .set(endDialogue, {display: "flex", x:'-40dvh', delay: 0.000001})
-        .to(endDialogue, {duration: .3, x: 0, ease: 'power2.out'})
+        tl
+        .set(endDialogue, {display: "flex", x:'-50vw', y:0, delay: 0.4})
+        .to(endDialogue, {duration: .3, x: 0, ease: 'power2.out'}, '+=.3')
       } else {
-        gsap.timeline()
+        tl
         .set(endDialogue, {display: "flex", y:'100dvh'})
         .to(endDialogue, {duration: .3, y: 0, ease: 'power2.out'})
         .set([gameContainer, mobileLogoBanner], {display: 'none'})
@@ -558,29 +623,33 @@ function playGame(difficulty) {
 
 function genMoles(height, width, difficulty) {
   const moles = [];
-  let num_moles = 0;
+  let numHills = height*width
   let coord;
-  if (difficulty == "easy") {
-    num_moles = ~~(height * width * 0.12);
-  }
-  if (difficulty == "medium") {
-    num_moles = ~~(height * width * 0.15);
-  }
-  if (difficulty == "hard") {
-    num_moles = ~~(height * width * 0.2);
-  }
+  let num_moles = difficulty=='easy' ? ~~(numHills*0.12) : difficulty=='medium' ? ~~(numHills*0.15) : ~~(numHills*0.2)
   while (moles.length < num_moles) {
     coord = JSON.stringify([
       ~~(Math.random() * width),
       ~~(Math.random() * height),
     ]);
-    if (!moles.includes(coord)) {
-      moles.push(coord);
-    }
+    if (!moles.includes(coord)) { moles.push(coord) };
   }
   return moles;
 }
 
+function makeCookieObj() {
+  let obj = {};
+  if(document.cookie) {
+    let cookieString = document.cookie;
+    let parsedCookie = cookieString.split("; ");
+    
+    for (cookie of parsedCookie) {
+      let keyValue = cookie.split("=")
+      obj[keyValue[0]] = keyValue[1]
+    }
+    return obj
+  } 
+  return null 
+}
 
 
 

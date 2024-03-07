@@ -208,6 +208,7 @@ h2 {
     width: 100vw;
     height: 10vw;
     z-index: 6;
+    visibility: hidden;
 }
 
 .side-bar-content {
@@ -496,6 +497,7 @@ h2 {
         width: auto; /* Assuming you might want to adjust the width */
         height: auto; /* And adjust the height if necessary */
         z-index: 0;
+        visibility: visible;
     }
 
     .side-bar-content {
@@ -505,7 +507,7 @@ h2 {
         justify-content: space-between;
         max-width: 40vw;
         height: 100%;
-        visibility: visible; /* Assuming you want to make it visible now */
+        visibility: hidden; /* Assuming you want to make it visible now */
     }
     
     #sidebar-logo {
