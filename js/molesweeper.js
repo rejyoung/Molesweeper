@@ -32,7 +32,13 @@ const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
 const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
 const tl = gsap.timeline()
 const cookieObj = makeCookieObj()
-const replay = cookieObj['playAgain']
+let replay; 
+
+if(cookieObj['playAgain']) {
+  replay = cookieObj["playAgain"];
+} else {
+  replay = false;
+}
 
 let flagDialogue;
 
