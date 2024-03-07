@@ -34,7 +34,7 @@ const tl = gsap.timeline()
 const cookieObj = makeCookieObj()
 let replay; 
 
-if(cookieObj['playAgain']) {
+if(Object.keys(cookieObj).includes('playAgain')) {
   replay = cookieObj["playAgain"];
 } else {
   replay = false;
