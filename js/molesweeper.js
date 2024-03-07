@@ -108,13 +108,20 @@ playBtn.addEventListener("click", gameSetup);
 
 againBtn.addEventListener('click', () => {
   document.cookie = "playAgain=true; max-age=8"
-    if(mediaQuery.matches) {
-      gsap.to(endDialogue, {duration: .3, x: '-100dvh'})
-      gsap.to(muteBtn, {duration: .3, opacity: 0})
-      gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: () => {location.reload()}})
+  let audioFade = setInterval(() => {
+    if (!soundtrack.muted) {
+        soundtrack.volume -= 0.05;
     } else {
-      gsap.to(endDialogue, {duration: .3, y: '100dvh', onComplete: () => {location.reload()}})
+        clearInterval(audioFade);
     }
+  }, 35);
+  if(mediaQuery.matches) {
+    gsap.to(endDialogue, {duration: .3, x: '-100dvh'})
+    gsap.to(muteBtn, {duration: .3, opacity: 0})
+    gsap.to(gameContainer, {duration: .5, x: '100vw', onComplete: () => {location.reload()}})
+  } else {
+    gsap.to(endDialogue, {duration: .3, y: '100dvh', onComplete: () => {location.reload()}})
+  }
 });
     
 muteBtn.addEventListener('click', () => {
