@@ -17,6 +17,7 @@ const okayBtn = document.querySelector('#okay');
 const sideBar = document.querySelector('.side-bar-content');
 const sideBarContain = document.querySelector('.side-bar')
 const introLogo = document.querySelector('#intro-logo');
+const infoBtn = document.querySelector('#info-button')
 const flagCounter = document.querySelector('#flags-remaining');
 const endDialogue = document.querySelector('.end-dialogue-container');
 const endgameH1 = document.querySelector('.end-dialogue h1');
@@ -31,6 +32,7 @@ const flagToggleBtn = document.querySelector("#flag-toggle-button")
 const height = ~~(12 * (gameBoard.clientHeight/gameBoard.clientWidth))
 const width = Math.ceil(12 * (gameBoard.clientWidth / gameBoard.clientHeight));
 const tl = gsap.timeline()
+let flagDialogue;
 const cookieObj = makeCookieObj()
 let replay; 
 
@@ -43,7 +45,7 @@ setTimeout(() => {
 }, 5)
 
 
-let flagDialogue;
+
 
 
 window.addEventListener('load', () => {
@@ -61,14 +63,14 @@ window.addEventListener('load', () => {
     tl
     .set(sideBar, {x: "-40vw"})
     .set(sideBar, {visibility: "visible"}, '+= 1');
-    flagDialogue = `holding down the <span class="key">f</span> key before you click. It will mark the hill 
+    flagDialogue = `right-clicking <img src="img/right-click.svg" class="right-click"> on it. Doing so will mark the hill 
                  so you can remember and will keep you from accidentally smashing the hill. 
                  You can unflag a hill the same way.`;
   } else {
     tl
     .set(sideBarContain, {y: "10dvh"})
     .set(sideBarContain, {visibility: "visible"}, '+= 1');
-    flagDialogue = `tapping the flag icon in the toolbar at the bottom of your screen to enter flagging mode. Then simply tap the molehills you want to flag. It will mark the hill so you can remember and will keep you from accidentally smashing the hill in the future. Tap again to unflag the molehill. To exit flagging mode, just tap the flag icon again.`;
+    flagDialogue = `press and hold for one second on the molehills you want to flag. Doing so will mark the hill so you can remember and will keep you from accidentally smashing the hill in the future. Press and hold for one second again to unflag the molehill.`;
   }
 
   introTextP.innerHTML = `You just discovered that your yard is covered in molehills. 
@@ -327,11 +329,10 @@ function gameSetup() {
 
 function playGame(difficulty) {
   //*************** INITIALIZATION **************//
-  let isFDown = false;
-  let flagMode = false;
-  let currentHover = [];
+  // let isFDown = false;
   let gameLost = false;
   let gameWon = false;
+  let touchTimer = null;
   let revealedList = [];
   const moleList = genMoles(height, width, difficulty);
   let flagsRemaining = moleList.length;
@@ -376,47 +377,28 @@ function playGame(difficulty) {
     gsap.to(startDialogue, { display: "none", delay: 0.2 });
   });
 
-  window.addEventListener("keydown", event => {
-    if (event.key === "f") {
-      isFDown = true;
-      for (let coord of currentHover) {
-        if (
-          !gameLost &&
-          !gameWon &&
-          document.getElementById(coord).classList.contains("hidden") &&
-          flagsRemaining > 0
-        ) {
-          document.getElementById(coord).style.backgroundImage =
-            'url("img/flagged.png")';
-        }
-      }
+  infoBtn.addEventListener("click", () => {
+    if(!mediaQuery.matches) {
+      gsap.to(sideBarContain, {duration: 0.2, y: '10dvh'})
     }
-  });
+    tl
+    .set(startDialogue, {display: 'flex'})
+    .to(startDialogue, {duration: 0.2, opacity: 1})
+  })
 
-  window.addEventListener("keyup", event => {
-    if (event.key === "f") {
-      isFDown = false;
-      if (!gameLost && !gameWon) {
-        for (coord of currentHover) {
-          document.getElementById(coord).removeAttribute("style");
-        }
-      }
-    }
-  });
-
-  flagToggleBtn.addEventListener("click", () => {
-    if (!isFDown) {
-      isFDown = true;
-      flagMode = true;
-      this.classList.add("flag-selected");
-      this.firstChild.src = "img/flag-selected.png";
-    } else {
-      isFDown = false;
-      this.classList.remove("flag-selected");
-      flagMode = false;
-      this.firstChild.src = "img/flag.png";
-    }
-  }); 
+  // flagToggleBtn.addEventListener("click", () => {
+  //   if (!isFDown) {
+  //     isFDown = true;
+  //     flagMode = true;
+  //     this.classList.add("flag-selected");
+  //     this.firstChild.src = "img/flag-selected.png";
+  //   } else {
+  //     isFDown = false;
+  //     this.classList.remove("flag-selected");
+  //     flagMode = false;
+  //     this.firstChild.src = "img/flag.png";
+  //   }
+  // }); 
 
   //*************** BOARD CREATION **************//
 
@@ -443,129 +425,136 @@ function playGame(difficulty) {
     square.id = coord;
     squareP = document.createElement("p");
     squareP.innerText = MOLEFIELD.getSquare(coord).adjMoles;
-    square.appendChild(squareP);
-    gameBoard.appendChild(square);
-  }
-
-  for (square of document.querySelectorAll(".square")) {
-    square.addEventListener("click", reveal),
+    
+    if (!mediaQuery.matches) {
+      square.addEventListener("touchstart", () => {
+        touchTimer = setTimeout(() => flag(square), 1000)
+      })
+      square.addEventListener("touchEnd", () => {
+        if (touchTimer) {
+          clearTimeout(touchTimer);
+          touchTimer = null;
+        } else {
+          reveal(square)
+        }
+      })
+      square.addEventListener("touchcancel", () => {
+        if (touchTimer) {
+          clearTimeout(touchTimer);
+          touchTimer = null;
+        }
+      })
+    } else {
+      square.addEventListener("click", () => reveal(square)),
+      square.addEventListener("contextmenu", (event) => {
+        event.preventDefault();
+        flag(event.target);
+      });
       square.addEventListener("mouseenter", () => {
         if (
           !gameLost &&
           !gameWon &&
-          isFDown &&
-          this.classList.contains("hidden")
+          !square.classList.contains('flagged') &&
+          square.classList.contains("hidden")
         ) {
-          this.style.backgroundImage = 'url("img/flagged.png")';
+          square.style.backgroundImage = 'url("img/dirt-mound-squashed.png")';
         }
-        currentHover.push(this.id);
       }),
       square.addEventListener("mouseleave", () => {
-        if (!gameLost && !gameWon) {
-          this.removeAttribute("style");
+        if (!gameLost && !gameWon && !square.classList.contains('flagged')) {
+          square.removeAttribute("style");
         }
-        currentHover.shift();
       });
+      squareP.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        flag(square);
+      })
+    }
+
+    square.appendChild(squareP);
+    gameBoard.appendChild(square);
   }
 
   //*************** MOVE HANDLER/GAME LOGIC **************//
-  function reveal() {
+  function reveal(square) {
     if (!gameLost && !gameWon) {
-      currentSquare = MOLEFIELD.getSquare(this.id);
-      if (isFDown) {
-        if (this.classList.contains("hidden")) {
-          if (this.classList.contains("flagged")) {
-            this.classList.remove("flagged");
-            flagsRemaining += 1;
-            flagCounter.innerText = flagsRemaining;
-            if(!mediaQuery.matches) {
-              this.removeAttribute('style')
-              console.log('not working')
-            }
-          } else {
-            if (flagsRemaining > 0) {
-              this.classList.add("flagged");
-              flagsRemaining -= 1;
-              flagCounter.innerText = flagsRemaining;
+      currentSquare = MOLEFIELD.getSquare(square.id);
+      if (!square.classList.contains("flagged")) {
+        revealSub(currentSquare);
+        if (currentSquare.isMole) {
+          gameLost = true;
+          document.getElementById(
+            currentSquare.coordinates
+          ).style.backgroundImage = "url('img/moles.png')";
+          moleSqrs = [...moleList];
+          moleSqrs.splice(moleSqrs.indexOf(currentSquare.coordinates), 1);
+          let timer = 400;
+          function molePop() {
+            let moleCoord = moleSqrs.pop();
+            let sqr = MOLEFIELD.getSquare(moleCoord);
+            revealSub(sqr);
+            document.getElementById(moleCoord).style.backgroundImage =
+              "url('img/moles.png')";
+            if (moleSqrs.length > 0) {
+              if (timer > 50) {
+                timer -= 25;
+              }
+              setTimeout(molePop, timer);
             }
           }
-        }
-      } else {
-        if (!this.classList.contains("flagged")) {
-          revealSub(currentSquare);
-          if (currentSquare.isMole) {
-            gameLost = true;
-            document.getElementById(
-              currentSquare.coordinates
-            ).style.backgroundImage = "url('img/moles.png')";
-            moleSqrs = [...moleList];
-            moleSqrs.splice(moleSqrs.indexOf(currentSquare.coordinates), 1);
-            let timer = 400;
-            function molePop() {
-              let moleCoord = moleSqrs.pop();
-              let sqr = MOLEFIELD.getSquare(moleCoord);
-              revealSub(sqr);
-              document.getElementById(moleCoord).style.backgroundImage =
-                "url('img/moles.png')";
-              if (moleSqrs.length > 0) {
-                if (timer > 50) {
-                  timer -= 25;
-                }
-                setTimeout(molePop, timer);
-              }
-            }
-            setTimeout(molePop, 750);
-            if (mediaQuery.matches) {
-              endGame();
-            } else {
-              let endGameDelay = 500;
-              for (i = 0; i < moleList.length; i++) {
-                toAdd = 400 - i * 25;
-                if (toAdd >= 50) {
-                  endGameDelay += toAdd;
-                } else {
-                  endGameDelay += 50;
-                }
-              }
-              setTimeout(endGame, endGameDelay);
-            }
-          } else if (currentSquare.adjMoles > 0) {
-            this.firstChild.style.opacity = 1;
+          setTimeout(molePop, 750);
+          if (mediaQuery.matches) {
+            endGame();
           } else {
-            let adjList = [];
-            for (let adjCoord of currentSquare.adjacents) {
-              if (!revealedList.includes(adjCoord)) {
-                adjList.push(adjCoord);
+            let endGameDelay = 500;
+            for (i = 0; i < moleList.length; i++) {
+              toAdd = 400 - i * 25;
+              if (toAdd >= 50) {
+                endGameDelay += toAdd;
+              } else {
+                endGameDelay += 50;
               }
             }
-            let addedList = [...currentSquare.adjacents];
-            addedList.push(currentSquare.coordinates);
-            while (adjList.length > 0) {
-              let currentCoord = adjList.shift();
-              let newSquare = MOLEFIELD.getSquare(currentCoord);
-              if (
-                document
-                  .getElementById(currentCoord)
-                  .classList.contains("flagged")
-              ) {
-                continue;
-              } else {
-                revealSub(newSquare);
-                if (newSquare.adjMoles == 0) {
-                  for (let adjCoord of newSquare.adjacents) {
-                    if (
-                      !addedList.includes(adjCoord) &&
-                      !revealedList.includes(adjCoord)
-                    ) {
-                      adjList.push(adjCoord);
-                      addedList.push(adjCoord);
-                    }
+            setTimeout(endGame, endGameDelay);
+          }
+        } else if (currentSquare.adjMoles > 0) {
+          square.firstChild.style.opacity = 1;
+          square.style.backgroundImage = 'none';
+        } else {
+          let adjList = [];
+          square.style.backgroundImage = "none";
+          for (let adjCoord of currentSquare.adjacents) {
+            if (!revealedList.includes(adjCoord)) {
+              adjList.push(adjCoord);
+            }
+          }
+          let addedList = [...currentSquare.adjacents];
+          addedList.push(currentSquare.coordinates);
+          while (adjList.length > 0) {
+            let currentCoord = adjList.shift();
+            let newSquare = MOLEFIELD.getSquare(currentCoord);
+            if (
+              document
+                .getElementById(currentCoord)
+                .classList.contains("flagged")
+            ) {
+              continue;
+            } else {
+              revealSub(newSquare);
+              if (newSquare.adjMoles == 0) {
+                for (let adjCoord of newSquare.adjacents) {
+                  if (
+                    !addedList.includes(adjCoord) &&
+                    !revealedList.includes(adjCoord)
+                  ) {
+                    adjList.push(adjCoord);
+                    addedList.push(adjCoord);
                   }
-                } else {
-                  document.getElementById(
-                    newSquare.coordinates
-                  ).firstChild.style.opacity = 1;
                 }
+              } else {
+                document.getElementById(
+                  newSquare.coordinates
+                ).firstChild.style.opacity = 1;
               }
             }
           }
@@ -626,6 +615,33 @@ function playGame(difficulty) {
         .to(endDialogue, {duration: .3, y: 0, ease: 'power2.out'})
         .set([gameContainer, mobileLogoBanner], {display: 'none'})
         .set(sideBarContain, {backgroundColor: '#76bc32'})
+      }
+    }
+  }
+  
+  function flag(square) {
+    console.log(square)
+    if (!gameLost && !gameWon) {
+      currentSquare = MOLEFIELD.getSquare(square.id);
+      if (square.classList.contains("hidden")) {
+        if (square.classList.contains("flagged")) {
+          square.classList.remove("flagged");
+          flagsRemaining += 1;
+          flagCounter.innerText = flagsRemaining;
+          if(!mediaQuery.matches) {
+            square.removeAttribute('style')
+          } else {
+            square.style.backgroundImage = 'url("img/dirt-mound-squashed.png")';
+          }
+        } else {
+          if (flagsRemaining > 0) {
+            square.classList.add("flagged");
+            square.style.backgroundImage = 'url("img/flagged.png")'
+            flagsRemaining -= 1;
+            flagCounter.innerText = flagsRemaining;
+          }
+        }
+        navigator.vibrate(200)
       }
     }
   }

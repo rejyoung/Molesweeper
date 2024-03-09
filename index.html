@@ -29,7 +29,7 @@
         <main>
             <div class="side-bar">
                 <div class="side-bar-content">
-                        <img src="img/molesweeper-logo.png" id="sidebar-logo">
+                        <div class="sidebar-logo-container"><img src="img/molesweeper-logo.png" id="sidebar-logo"></div>
                         <div class="info">
                             <div id="flag-toggle-button"><img src="img/flag.png"></div>
                             
@@ -38,7 +38,12 @@
                                 <h3 id="flags-label">Flags Remaining</h3>
                             </div>
                             
-                            <p id="add-remove">Add/Remove Flag:<br><br><span class="key">f</span> + click</p>
+                            <div id="add-remove">
+                                <p id="add-remove">Add/Remove Flag:</p>
+                                <img src="img/right-click.svg">
+                            </div>
+
+                            <div class="info-button-container"><img id="info-button" src="img/info-button.svg"></div>
                             
                             <div class="mobile-mute-unmute-container"><img src="img/audio-mobile.svg" id="mobile-mute-unmute"></div>
                         </div>
