@@ -70,7 +70,7 @@ window.addEventListener('load', () => {
     tl
     .set(sideBarContain, {y: "10dvh"})
     .set(sideBarContain, {visibility: "visible"}, '+= 1');
-    flagDialogue = `press and hold for one second on the molehills you want to flag. Doing so will mark the hill so you can remember and will keep you from accidentally smashing the hill in the future. Press and hold for one second again to unflag the molehill.`;
+    flagDialogue = `pressing and holding the molehill for one second. Doing so will mark the molehill so you can remember and will keep you from accidentally smashing the molehill in the future. Press and hold for one second again to unflag the molehill.`;
   }
 
   introTextP.innerHTML = `You just discovered that your yard is covered in molehills. 
