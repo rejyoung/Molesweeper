@@ -330,6 +330,7 @@ function gameSetup() {
 function playGame(difficulty) {
   //*************** INITIALIZATION **************//
   // let isFDown = false;
+  let flagMode = false
   let gameLost = false;
   let gameWon = false;
   let touchTimer = null;
@@ -428,14 +429,22 @@ function playGame(difficulty) {
     
     if (!mediaQuery.matches) {
       square.addEventListener("touchstart", () => {
-        touchTimer = setTimeout(() => flag(square), 1000)
+        touchTimer = setTimeout(() => {
+          flagMode = true
+          flag(square)
+        }, 1000)
       })
-      square.addEventListener("touchEnd", () => {
+      square.addEventListener("touchend", () => {
         if (touchTimer) {
           clearTimeout(touchTimer);
           touchTimer = null;
-        } else {
           reveal(square)
+        } else {
+          if (flagMode != true) {
+            reveal(square);
+          } else {
+            flagMode = false;
+          }
         }
       })
       square.addEventListener("touchcancel", () => {
