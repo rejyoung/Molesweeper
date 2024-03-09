@@ -465,12 +465,11 @@ function playGame(difficulty) {
           square.removeAttribute("style");
         }
       });
-      squareP.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-        flag(square);
-      })
     }
-
+    squareP.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      flag(square);
+    });
     square.appendChild(squareP);
     gameBoard.appendChild(square);
   }
