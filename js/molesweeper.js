@@ -349,7 +349,12 @@ function playGame(difficulty) {
     }
     tl
       .to(startDialogue, { display: "none", delay: 0.2 })
-      .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<");;
+      .to(gameContainer, { duration: 1, x: 0, opacity: 1 }, "<")
+      .set([difSelect, startBtn], {display: 'none'})
+      .set([introText, okayBtn], {display: 'block', opacity: 1})
+    if(mediaQuery.matches) {
+      gsap.set(startDialogue, {height: '90dvh'})
+    }
   } else {
     gsap.to([difSelect, startBtn], { duration: .6, y: '-150dvh' })
     if(mediaQuery.matches) {
