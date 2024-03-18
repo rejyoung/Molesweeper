@@ -1,98 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Molesweeper</title>
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/molesweeper.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Irish+Grover&display=swap" rel="stylesheet">
-        <!-- <link rel="icon" href="/favicon.ico" sizes="any"> -->
-        <!-- <link rel="icon" href="/icon.svg" type="image/svg+xml"> -->
-        <!-- <link rel="apple-touch-icon" href="icon.png"> -->
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Molesweeper</title>
+		<link rel="stylesheet" href="css/normalize.css" />
+		<link rel="stylesheet" href="css/molesweeper.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Irish+Grover&display=swap"
+			rel="stylesheet" />
+		<!-- <link rel="icon" href="/favicon.ico" sizes="any"> -->
+		<!-- <link rel="icon" href="/icon.svg" type="image/svg+xml"> -->
+		<!-- <link rel="apple-touch-icon" href="icon.png"> -->
 
-        <meta name="description" content="">
-        <meta property="og:title" content="">
-        <meta property="og:type" content="">
-        <meta property="og:url" content="">
-        <meta property="og:image" content="">
-        <meta name="theme-color" content="#fafafa">
+		<meta name="description" content="" />
+		<meta property="og:title" content="" />
+		<meta property="og:type" content="" />
+		<meta property="og:url" content="" />
+		<meta property="og:image" content="" />
+		<meta name="theme-color" content="#fafafa" />
+	</head>
 
-    </head>
+	<body>
+		<audio src="audio/pop.m4a" id="pop" preload="auto"></audio>
+		<audio
+			src="audio/Silly-Fun.mp3"
+			id="soundtrack"
+			preload="auto"
+			loop></audio>
+		<img src="img/audio.svg" id="mute-unmute" />
+		<main>
+			<div class="side-bar">
+				<div class="side-bar-content">
+					<div class="sidebar-logo-container">
+						<img src="img/molesweeper-logo.png" id="sidebar-logo" />
+					</div>
+					<div class="info">
+						<div id="flag-toggle-button"><img src="img/flag.png" /></div>
 
-    <body>
-        <audio src="audio/pop.m4a" id="pop" preload = "auto"></audio>
-        <audio src="audio/Silly-Fun.mp3" id="soundtrack" preload="auto" loop></audio>
-        <img src="img/audio.svg" id="mute-unmute">
-        <main>
-            <div class="side-bar">
-                <div class="side-bar-content">
-                        <div class="sidebar-logo-container"><img src="img/molesweeper-logo.png" id="sidebar-logo"></div>
-                        <div class="info">
-                            <div id="flag-toggle-button"><img src="img/flag.png"></div>
-                            
-                            <div class="flags">
-                                <div id="flags-remaining"></div>
-                                <h3 id="flags-label">Flags Remaining</h3>
-                            </div>
-                            
-                            <div id="add-remove">
-                                <p id="add-remove">Add/Remove Flag:</p>
-                                <img src="img/right-click.svg">
-                            </div>
+						<div class="flags">
+							<div id="flags-remaining"></div>
+							<h3 id="flags-label">Flags Remaining</h3>
+						</div>
 
-                            <div class="info-button-container"><img id="info-button" src="img/info-button.svg"></div>
-                            
-                            <div class="mobile-mute-unmute-container"><img src="img/audio-mobile.svg" id="mobile-mute-unmute"></div>
-                        </div>
-                </div>
+						<div id="add-remove">
+							<p id="add-remove">Add/Remove Flag:</p>
+							<img src="img/right-click.svg" />
+						</div>
 
-                <div class="end-dialogue-container">
-                    <div class="end-dialogue">
-                        <h1></h1>
-                        <img id="end-game-image" src="">
-                        <p></p>
-                        <button id="play-again">Play Again</button>
-                    </div>
-                </div>
+						<div class="info-button-container">
+							<img id="info-button" src="img/info-button.svg" />
+						</div>
 
-            </div>
+						<div class="mobile-mute-unmute-container">
+							<img src="img/audio-mobile.svg" id="mobile-mute-unmute" />
+						</div>
+					</div>
+				</div>
 
-            <div class="game-container" style="opacity: 0">
-                <div class="gameboard-background">
-                    <div class = 'gameBoard'>
-                    </div>
-                </div>
-            </div>
-            <div class="mobile-logo-banner"><img src="img/molesweeper-logo.png"></div>
-        </main>
-        <img src="img/molesweeper-logo.png" id="intro-logo">
-        <div id="startDialogue">
-            <button id="play">Play</button>
-            <div id="difficulty">
-                <h2>Choose Difficulty</h2>
-                <div class="diff-buttons">
-                    <button id="easy">Easy</button>
-                    <button id="medium">Medium</button>
-                    <button id="hard">Hard</button>
-                </div>
-            </div>
-            <div class="intro-text">
-                <h2>Moles have dug up your yard!</h2>
-                <div class="intro-content">
-                    <p id="intro-paragraph"></p>
-                    <div class="scroll-down"><img src="img/chevron-down.svg"></div>
-                </div>
-                
-            </div>
-            <button id="start-game">Start Game</button>
-            <button id="okay">Okay</button>
-        </div>
-        <script src="js/gsap.min.js"></script>
-        <!-- <script src="js/molesweeper.js"></script> -->
-        <script src="js/molesweeper.js"></script>
-    </body>
+				<div class="end-dialogue-container">
+					<div class="end-dialogue">
+						<h1></h1>
+						<img id="end-game-image" src="" />
+						<p></p>
+						<button id="play-again">Play Again</button>
+					</div>
+				</div>
+			</div>
 
+			<div class="game-container" style="opacity: 0">
+				<div class="gameboard-background">
+					<div class="gameBoard"></div>
+				</div>
+			</div>
+			<div class="mobile-logo-banner">
+				<img src="img/molesweeper-logo.png" />
+			</div>
+		</main>
+		<img src="img/molesweeper-logo.png" id="intro-logo" />
+		<div id="startDialogue">
+			<button id="play">Play</button>
+			<div id="difficulty">
+				<h2>Choose Difficulty</h2>
+				<div class="diff-buttons">
+					<button id="easy">Easy</button>
+					<button id="medium">Medium</button>
+					<button id="hard">Hard</button>
+				</div>
+			</div>
+			<div class="intro-text">
+				<h2>Moles have dug up your yard!</h2>
+				<div class="intro-content">
+					<p id="intro-paragraph"></p>
+					<div class="scroll-down"><img src="img/chevron-down.svg" /></div>
+				</div>
+			</div>
+			<button id="start-game">Start Game</button>
+			<button id="okay">Okay</button>
+		</div>
+		<script src="js/gsap.min.js"></script>
+		<!-- <script src="js/molesweeper.js"></script> -->
+		<script src="js/molesweeper.js"></script>
+	</body>
 </html>
