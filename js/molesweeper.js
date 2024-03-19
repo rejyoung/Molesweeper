@@ -523,10 +523,10 @@ function playGame(difficulty) {
 			});
 		} else {
 			square.addEventListener("click", () => reveal(square)),
-				square.addEventListener("contextmenu", (event) => {
-					event.preventDefault();
-					flag(event.target);
-				});
+			square.addEventListener("contextmenu", (event) => {
+				event.preventDefault();
+				flag(event.target);
+			});
 			square.addEventListener("mouseenter", () => {
 				if (
 					!gameLost &&
