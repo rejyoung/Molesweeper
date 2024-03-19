@@ -697,7 +697,7 @@ function playGame(difficulty) {
 		console.log(square);
 		if (!gameLost && !gameWon) {
 			currentSquare = MOLEFIELD.getSquare(square.id);
-			if (square.isRevealed == false) {
+			if (currentSquare.isRevealed == false) {
 				if (square.classList.contains("flagged")) {
 					square.classList.remove("flagged");
 					flagsRemaining += 1;
