@@ -51,7 +51,9 @@ button:hover {
 }
 
 .right-click {
-	height: 5dvh;
+	height: 4.5dvh;
+	margin-top: 0;
+	margin-bottom: 0;
 	width: auto;
 	vertical-align: bottom;
 }
@@ -112,7 +114,7 @@ main {
 	bottom: 0;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
+	justify-content: center;
 	align-items: center;
 	opacity: 1;
 	z-index: 3;
@@ -155,7 +157,8 @@ h2 {
 
 #intro-paragraph {
 	font-size: 3dvh;
-	line-height: 38px;
+	text-align: justify;
+	line-height: 4.5dvh;
 	margin-bottom: 0;
 	max-height: 60dvh;
 	overflow: scroll;
@@ -465,6 +468,10 @@ h2 {
 		position: static;
 	}
 
+	h2 {
+		font-size: 2rem;
+	}
+
 	#intro-logo {
 		display: flex; /* Added */
 		top: calc((100dvh - calc(80vw * (366 / 1884))) / 2);
@@ -472,6 +479,15 @@ h2 {
 		width: 80vw;
 		justify-content: center; /* Added */
 		align-items: center; /* Added */
+	}
+
+	#intro-paragraph {
+		font-size: 1.5rem;
+		margin-top: 0;
+	}
+
+	.intro-text h2 {
+		margin-top: 1dvh;
 	}
 
 	#play {
@@ -644,5 +660,15 @@ h2 {
 		left: 20px;
 		width: 40px;
 		height: auto;
+	}
+}
+
+@media screen and (min-width: 1382px) {
+	.intro-text h2 {
+		font-size: 3rem;
+	}
+
+	#intro-paragraph {
+		font-size: 2rem;
 	}
 }

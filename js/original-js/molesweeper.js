@@ -523,10 +523,10 @@ function playGame(difficulty) {
 			});
 		} else {
 			square.addEventListener("click", () => reveal(square)),
-			square.addEventListener("contextmenu", (event) => {
-				event.preventDefault();
-				flag(event.target);
-			});
+				square.addEventListener("contextmenu", event => {
+					event.preventDefault();
+					flag(event.target);
+				});
 			square.addEventListener("mouseenter", () => {
 				if (
 					!gameLost &&
@@ -543,7 +543,7 @@ function playGame(difficulty) {
 					}
 				});
 		}
-		squareP.addEventListener("contextmenu", (event) => {
+		squareP.addEventListener("contextmenu", event => {
 			event.preventDefault();
 			flag(square);
 		});
@@ -753,7 +753,7 @@ function makeCookieObj() {
 		let cookieString = document.cookie;
 		let parsedCookie = cookieString.split("; ");
 
-		for (cookie of parsedCookie) {
+		for (let cookie of parsedCookie) {
 			let keyValue = cookie.split("=");
 			obj[keyValue[0]] = keyValue[1];
 		}
