@@ -79,20 +79,18 @@ class GameHubClass {
 				} else {
 					this.replay = false;
 				}
-				if (this.cookieObj) {
-					if (this.cookieObj["muted"] == "true") {
-						this.InputHandler = new InputHandler(true);
-						soundtrack.muted = true;
-						document.querySelector("#mute-unmute").src = "img/audio-muted.svg";
-						document.querySelector("#mobile-mute-unmute").src =
-							"img/audio-muted-mobile.svg";
-					} else {
-						this.InputHandler = new InputHandler(false);
-					}
+				if (this.cookieObj["muted"] == "true") {
+					this.InputHandler = new InputHandler(true);
+					soundtrack.muted = true;
+					document.querySelector("#mute-unmute").src = "img/audio-muted.svg";
+					document.querySelector("#mobile-mute-unmute").src =
+						"img/audio-muted-mobile.svg";
 				} else {
-					document.cookie = "muted=false";
 					this.InputHandler = new InputHandler(false);
 				}
+			} else {
+				document.cookie = "muted=false";
+				this.InputHandler = new InputHandler(false);
 			}
 			if (this.replay) {
 				this.RenderEngine = new ReplayRenderEngine();

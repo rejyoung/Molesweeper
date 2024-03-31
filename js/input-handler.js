@@ -4,22 +4,22 @@ const gameBoard = document.querySelector(".gameBoard");
 const mediaQuery = window.matchMedia("(min-width: 600px)");
 const startBtn = document.querySelector("#start-game");
 const soundtrack = document.querySelector("#soundtrack");
-
 export class InputHandler {
 	constructor(isMuted) {
 		this.GameHub = GameHub;
 		this.StateEngine = null;
+		console.log('about-to-get-buttons')
 		this.buttons = this.getButtons();
+		console.log('just got buttons')
 		this.difficulty = "";
 		this.assignEventListeners();
 		this.isMuted = isMuted;
 		this.initSound();
+		console.log('its working')
 	}
 
 	getButtons() {
-		return document.querySelectorAll(
-			"button, #mute-unmute, #mobile-mute-unmute, #info-button"
-		);
+		return document.querySelectorAll('button, #mute-unmute, #mobile-mute-unmute, #info-button')
 	}
 
 	assignEventListeners() {
