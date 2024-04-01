@@ -16,7 +16,9 @@ export class InputHandler {
 	}
 
 	getButtons() {
-		return document.querySelectorAll('button, #mute-unmute, #mobile-mute-unmute, #info-button')
+		return document.querySelectorAll(
+			"button, #mute-unmute, #mobile-mute-unmute, #info-button"
+		);
 	}
 
 	assignEventListeners() {

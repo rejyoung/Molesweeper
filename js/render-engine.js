@@ -420,7 +420,7 @@ export class RenderEngine extends Renderer {
 				{ display: "block" }
 			);
 		}
-		tl.set(playBtn, { display: "none"})
+		tl.set(playBtn, { display: "none" })
 			.set(startDialogue, { justifyContent: "space-around" })
 			.set(difSelect, { display: "block" }, "<")
 			.set(startBtn, { display: "block", opacity: 0, scale: 0.2 }, "<")
