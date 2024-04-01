@@ -135,7 +135,7 @@ class Renderer {
 				this.StateMachine.moleList.length
 		) {
 			this.gameWon = true;
-			endGame(this.gameWon);
+			this.endGame(this.gameWon);
 		}
 	}
 
