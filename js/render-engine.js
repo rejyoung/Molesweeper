@@ -150,8 +150,8 @@ class Renderer {
 			this.endGame(this.gameWon);
 		} else {
 			let endGameDelay = 500;
-			for (i = 0; i < this.StateMachine.moleList.length; i++) {
-				toAdd = 400 - i * 25;
+			for (let i = 0; i < this.StateMachine.moleList.length; i++) {
+				let toAdd = 400 - i * 25;
 				if (toAdd >= 50) {
 					endGameDelay += toAdd;
 				} else {
@@ -413,14 +413,14 @@ export class RenderEngine extends Renderer {
 				"-=.4"
 			);
 		}
-		gsap.set(introLogo, { display: "none", delay: 1.3 });
+		gsap.set(introLogo, { display: "none", delay: 0.4 });
 		if (!mediaQuery.matches) {
-			tl.set(mobileLogoBanner, { display: "block", delay: 1.3 }).set(
+			tl.set(mobileLogoBanner, { display: "block", delay: 0.4 }).set(
 				sideBarContain,
 				{ display: "block" }
 			);
 		}
-		tl.set(playBtn, { display: "none", delay: 0.5 })
+		tl.set(playBtn, { display: "none"})
 			.set(startDialogue, { justifyContent: "space-around" })
 			.set(difSelect, { display: "block" }, "<")
 			.set(startBtn, { display: "block", opacity: 0, scale: 0.2 }, "<")

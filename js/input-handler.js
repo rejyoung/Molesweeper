@@ -8,14 +8,11 @@ export class InputHandler {
 	constructor(isMuted) {
 		this.GameHub = GameHub;
 		this.StateEngine = null;
-		console.log('about-to-get-buttons')
 		this.buttons = this.getButtons();
-		console.log('just got buttons')
 		this.difficulty = "";
 		this.assignEventListeners();
 		this.isMuted = isMuted;
 		this.initSound();
-		console.log('its working')
 	}
 
 	getButtons() {
