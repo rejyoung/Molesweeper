@@ -174,9 +174,7 @@ export class InputHandler {
 		}
 		if (!soundtrack.muted) {
 			soundtrack.muted = true;
-			console.log(muteBtn.src);
 			muteBtn.src = `img/audio-muted${mobExt}.svg`;
-			console.log(muteBtn.src);
 			document.cookie = "muted=true";
 		} else {
 			soundtrack.muted = false;
