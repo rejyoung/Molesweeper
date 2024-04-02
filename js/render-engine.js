@@ -19,6 +19,7 @@ const sideBarContain = document.querySelector(".side-bar");
 const muteBtn = document.querySelector("#mute-unmute");
 let flagDialogue;
 const infoBtn = document.querySelector("#info-button");
+const flagFlash = document.querySelector("#flag-flash")
 const flagCounter = document.querySelector("#flags-remaining");
 const endDialogue = document.querySelector(".end-dialogue-container");
 const endgameH1 = document.querySelector(".end-dialogue h1");
@@ -107,12 +108,25 @@ class Renderer {
 		document.getElementById(id).classList.add("flagged");
 		document.getElementById(id).classList.remove("hidden");
 		flagCounter.innerText = flagsRemaining;
+		if(!mediaQuery.matches) {
+			this.flagFlash()
+		}
 	}
 
 	unflag(id, flagsRemaining) {
 		document.getElementById(id).classList.add("hidden");
 		document.getElementById(id).classList.remove("flagged");
 		flagCounter.innerText = flagsRemaining;
+		if (!mediaQuery.matches) {
+			this.flagFlash();
+		}
+	}
+
+	flagFlash() {
+		tl.set(flagFlash, {display: 'block'})
+			.to(flagFlash, {duration: 0.3, opacity: .7})
+			.to(flagFlash, {duration: 0.5, opacity: 0})
+			.set(flagFlash, {display: 'none', opacity: 0})
 	}
 
 	reveal(id, hasAdjMoles = false, isMole = false) {

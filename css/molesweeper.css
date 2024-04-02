@@ -117,7 +117,7 @@ main {
 	justify-content: center;
 	align-items: center;
 	opacity: 1;
-	z-index: 3;
+	z-index: 7;
 	overflow: hidden;
 	visibility: hidden;
 }
@@ -311,7 +311,6 @@ h2 {
 	text-align: left;
 	font-size: 2dvh;
 	width: auto;
-	/* margin-right: 2vw; */
 }
 
 #add-remove {
@@ -337,6 +336,7 @@ h2 {
 	position: absolute;
 	bottom: 0;
 	display: none;
+	z-index: 8;
 }
 
 .end-dialogue {
@@ -399,6 +399,7 @@ h2 {
 	height: 80dvh;
 	margin: 0;
 	padding: 0;
+	z-index: 2;
 }
 
 .gameBoard {
@@ -407,6 +408,7 @@ h2 {
 	display: grid;
 	column-gap: 0;
 	padding: 5px;
+	z-index: 4;
 }
 
 .square {
@@ -416,7 +418,7 @@ h2 {
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-	z-index: 2;
+	z-index: 6;
 }
 
 .square p {
@@ -428,7 +430,18 @@ h2 {
 	font-size: 32px;
 	line-height: 25px;
 	text-shadow: 1px 1px 1px black;
-	z-index: 1;
+	z-index: 5;
+}
+
+#flag-flash {
+	background-color: white;
+	margin: 0;
+	height: 80dvh;
+	width: 100vw;
+	position: absolute;
+	bottom: 0;
+	opacity: 4;
+	display: none;
 }
 
 /*  Conditions */
@@ -548,7 +561,6 @@ h2 {
 		flex-grow: 2;
 	}
 
-	#flag-toggle-button,
 	#mobile-mute-unmute {
 		display: none;
 	}
@@ -603,6 +615,9 @@ h2 {
 		display: none;
 	}
 
+	#flag-flash {
+		display: none;
+	}
 	/* Endgame Panel */
 	.end-dialogue-container {
 		border-radius: 30px;
