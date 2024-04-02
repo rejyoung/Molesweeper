@@ -50,7 +50,7 @@ export class StateMachine {
 	toggleFlag(id) {
 		const currentSquare = this.Molefield.getSquare(id);
 		if (!currentSquare.isRevealed) {
-			if (!currentSquare.isFlagged) {
+			if (!currentSquare.isFlagged && flagsRemaining > 0) {
 				currentSquare.isFlagged = true;
 				this.flagsRemaining -= 1;
 				this.RenderEngine.flag(id, this.flagsRemaining);
