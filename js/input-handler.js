@@ -23,6 +23,7 @@ export class InputHandler {
 
 	assignEventListeners() {
 		let touchTimer = null;
+		let nowFlagging = false;
 		let justFlagged = false;
 		this.buttons.forEach(element => {
 			if (element.id != "start-game") {
@@ -62,31 +63,36 @@ export class InputHandler {
 			gameBoard.addEventListener("touchstart", e => {
 				let target = e.target.closest(".square");
 				if (target) {
+					nowFlagging = true
 					touchTimer = setTimeout(() => {
-						this.GameHub.squareInput("flag", target.id);
 						justFlagged = true;
+						this.GameHub.squareInput("flag", target.id);
+						nowFlagging = false;
 					}, 400);
 				}
 			});
 			gameBoard.addEventListener("touchend", e => {
 				let target = e.target.closest(".square");
 				if (target) {
-					if (touchTimer) {
+					if (nowFlagging) {
 						clearTimeout(touchTimer);
-						touchTimer = null;
+						nowFlagging = false;
 						this.handleElementClick(target);
+
 					} else if (justFlagged) {
 						justFlagged = false;
+						console.log('just flagged')
 					} else {
 						this.handleElementClick(target);
+						console.log('click')
 					}
 				}
 			});
 			gameBoard.addEventListener("touchcancel", e => {
 				let target = e.target.closest(".square");
-				if (target && touchTimer) {
+				if (target && nowFlagging == true) {
 					clearTimeout(touchTimer);
-					touchTimer = null;
+					nowFlagging = false;
 				}
 			});
 		}
