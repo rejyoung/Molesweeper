@@ -65,7 +65,7 @@ export class InputHandler {
 					touchTimer = setTimeout(() => {
 						this.GameHub.squareInput("flag", target.id);
 						justFlagged = true;
-					}, 500);
+					}, 400);
 				}
 			});
 			gameBoard.addEventListener("touchend", e => {
