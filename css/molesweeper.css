@@ -7,7 +7,7 @@
 /*******************************/
 
 :root {
-    --grass-green: #76bc32;
+    --grass-green: #98ca3c;
     --green-compliment: #e3e154;
     --green-contrast: #a16ae8;
 }
@@ -180,7 +180,7 @@ h2 {
 }
 
 #intro-paragraph {
-    font-size: 3dvh;
+    font-size: 1.1rem;
     text-align: justify;
     line-height: 5dvh;
     margin-bottom: 0;
@@ -368,7 +368,7 @@ h2 {
 }
 
 .end-dialogue p {
-    font-size: 3dvh;
+    font-size: 1.25rem;
     flex-grow: 1;
 }
 
@@ -405,8 +405,12 @@ h2 {
 }
 
 .gameboard-background {
-    background-image: url("../img/backyard.jpg");
-    background-size: 400vw 400vw;
+    background-image: image-set(
+        url("../img/background-cropped/background-cropped.webp") 1x,
+        url("../img/background-cropped/background-cropped@2x.webp") 2x,
+        url("../img/background-cropped/background-cropped@3x.webp") 3x
+    );
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     width: 100vw;
@@ -461,11 +465,19 @@ h2 {
 /*  Conditions */
 
 .hidden {
-    background-image: url("../img/dirt-mound.png");
+    background-image: image-set(
+        url("../img/dirt-mound/dirt-mound.webp") 1x,
+        url("../img/dirt-mound/dirt-mound@2x.webp") 2x,
+        url("../img/dirt-mound/dirt-mound@3x.webp") 3x
+    );
 }
 
 .flagged {
-    background-image: url("../img/flagged.png");
+    background-image: image-set(
+        url("../img/flagged/flagged.webp") 1x,
+        url("../img/flagged/flagged@2x.webp") 2x,
+        url("../img/flagged/flagged@3x.webp") 3x
+    );
 }
 
 /*******************************/
@@ -523,7 +535,7 @@ h2 {
     }
 
     #intro-paragraph {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         margin-top: 0;
     }
 
@@ -665,16 +677,23 @@ h2 {
         font-size: default;
     }
     .end-dialogue p {
-        font-size: 30px; /* Adjusting font size if necessary */
+        font-size: 2rem; /* Adjusting font size if necessary */
     }
 
     .game-container {
-        width: auto;
+        width: 104vh;
+        width: 104dvh;
+        height: 100vh;
         height: 100dvh;
     }
 
     .gameboard-background {
-        background-size: contain;
+        background-image: image-set(
+            url("../img/background-full/background-web.webp") 1x,
+            url("../img/background-full/background-web@2x.webp") 2x,
+            url("../img/background-full/background-web@3x.webp") 3x
+        );
+        background-size: cover;
         width: 100%;
         height: 100%;
     }
@@ -682,7 +701,7 @@ h2 {
     .gameBoard {
         width: 100dvh;
         height: 100dvh;
-        padding: 23% 23% 20% 20%;
+        padding: 21% 18% 20% 23%;
     }
 
     .square p {
@@ -691,12 +710,16 @@ h2 {
     }
 
     .flagged:hover {
-        background-image: url("../img/flagged.png");
+        background-image: image-set(
+            url("../img/flagged/flagged.webp") 1x,
+            url("../img/flagged/flagged@2x.webp") 2x,
+            url("../img/flagged/flagged@3x.webp") 3x
+        );
     }
 
-    .hidden:hover {
+    /* .hidden:hover {
         background-image: url("../img/dirt-mound-squashed.png");
-    }
+    } */
 
     #mute-unmute {
         bottom: 20px;
@@ -709,9 +732,5 @@ h2 {
 @media screen and (min-width: 1382px) {
     .intro-text h2 {
         font-size: 3rem;
-    }
-
-    #intro-paragraph {
-        font-size: 2rem;
     }
 }
