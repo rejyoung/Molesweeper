@@ -9,3 +9,5 @@ Silly Fun by Kevin MacLeod | https://incompetech.com/
 Music promoted by https://www.chosic.com/free-music/all/
 Creative Commons CC BY 3.0
 https://creativecommons.org/licenses/by/3.0/
+
+> **NOTE:** This game has been updated and adapted as a mobile game using React Native, available now on iOS through the [App Store](https://apps.apple.com/us/app/molesweeper/id6742201228) and coming soon on Android.
